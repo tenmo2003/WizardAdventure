@@ -74,7 +74,7 @@ public:
 private:
     int health, maxHealth;
     float velocity;
-    int damage = 5, bulletDamage = 4;
+    int damage = 5, bulletDamage = 5;
 
     float exp = 0;
     int level = 1;
