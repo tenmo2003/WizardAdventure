@@ -10,4 +10,4 @@ SDL Version used: 32-bit ver.
   
   -SDL2-2.0.20
 
-If there's any bugs, it should be due to your installation.
+If there's any bugs, it should be due to your installation, or it is just me forgetting to commit changes.
