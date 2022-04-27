@@ -4,6 +4,7 @@
 Game::Game()
 {
     init("Wizard Adventure: The Cuteness Invasion!!!", WINDOW_WIDTH, WINDOW_HEIGHT, false);
+    TTF_Init();
     while(appRunning) {
         isRunning = true;
         fullscreen = false;
@@ -18,9 +19,8 @@ Game::Game()
         menu();
 
         if (!first) lastTime = 0;
+        timeInSeconds = 0;
         startTime = SDL_GetTicks();
-
-        TTF_Init();
 
         bgMusic.load("res/track.wav");
         atkSound.load("res/atk.wav");
