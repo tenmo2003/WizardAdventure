@@ -44,7 +44,7 @@ Game::Game()
         enemies.clear();
         enemies.push_back(Meow(0, 0, 32 * 1.5, 32 * 1.5, 10, 1, 2, "res/slime.png", renderer));
         enemies.push_back(Meow(1600, 1900, 32 * 1.5, 32 * 1.5, 10, 1, 100, "res/slime.png", renderer));
-
+        
         bgMusic.play();
 
         while (isRunning)
@@ -86,12 +86,12 @@ Game::Game()
                     }
                 }
             }
-
+            
             if (bgMusic.donePlaying())
             {
                 bgMusic.play();
             }
-
+            
             if (!paused)
                 update();
             handleInputs();
@@ -777,9 +777,81 @@ void Game::spawnEnemies()
     {
         for (int i = 0; i < 60; i++)
         {
-            enemies.push_back(Meow(rand() % levelWidth, rand() % levelHeight, 32 * 1.5, 32 * 1.5, 5, 1, 2, "res/slime.png", renderer));
+            enemies.push_back(Meow(rand() % levelWidth, rand() % levelHeight, 32 * 1.5, 32 * 1.5, 10, 2, 4, "res/slime.png", renderer));
         }
-        enemies.push_back(Meow(rand() % levelWidth, rand() % levelHeight, 50 * 1.5, 50 * 1.5, 50, 20, 10, "res/frog.png", renderer));
+        enemies.push_back(Meow(rand() % levelWidth, rand() % levelHeight, 40 * 1.5, 40 * 1.5, 50, 20, 10, "res/frog.png", renderer));
+    }
+    if (timeInSeconds == PHASE6)
+    {
+        for (int i = 0; i < 70; i++)
+        {
+            enemies.push_back(Meow(rand() % levelWidth, rand() % levelHeight, 32 * 1.5, 32 * 1.5, 10, 2, 4, "res/slime.png", renderer));
+        }
+    }
+    if (timeInSeconds == PHASE7)
+    {
+        for (int i = 0; i < 80; i++)
+        {
+            enemies.push_back(Meow(rand() % levelWidth, rand() % levelHeight, 32 * 1.5, 32 * 1.5, 10, 2, 4, "res/slime.png", renderer));
+        }
+    }
+    if (timeInSeconds == PHASE8)
+    {
+        for (int i = 0; i < 90; i++)
+        {
+            enemies.push_back(Meow(rand() % levelWidth, rand() % levelHeight, 32 * 1.5, 32 * 1.5, 10, 2, 4, "res/slime.png", renderer));
+        }
+    }
+    if (timeInSeconds == PHASE9)
+    {
+        for (int i = 0; i < 100; i++)
+        {
+            enemies.push_back(Meow(rand() % levelWidth, rand() % levelHeight, 32 * 1.5, 32 * 1.5, 10, 2, 4, "res/slime.png", renderer));
+        }
+    }
+    if (timeInSeconds == PHASE10)
+    {
+        for (int i = 0; i < 110; i++)
+        {
+            enemies.push_back(Meow(rand() % levelWidth, rand() % levelHeight, 32 * 1.5, 32 * 1.5, 20, 3, 4, "res/slime.png", renderer));
+        }
+        enemies.push_back(Meow(rand() % levelWidth, rand() % levelHeight, 50 * 1.5, 50 * 1.5, 120, 40, 30, "res/fireball.png", renderer));
+    }
+    if (timeInSeconds == PHASE11)
+    {
+        for (int i = 0; i < 120; i++)
+        {
+            enemies.push_back(Meow(rand() % levelWidth, rand() % levelHeight, 32 * 1.5, 32 * 1.5, 20, 3, 4, "res/slime.png", renderer));
+        }
+    }
+    if (timeInSeconds == PHASE12)
+    {
+        for (int i = 0; i < 130; i++)
+        {
+            enemies.push_back(Meow(rand() % levelWidth, rand() % levelHeight, 32 * 1.5, 32 * 1.5, 20, 3, 4, "res/slime.png", renderer));
+        }
+    }
+    if (timeInSeconds == PHASE13)
+    {
+        for (int i = 0; i < 140; i++)
+        {
+            enemies.push_back(Meow(rand() % levelWidth, rand() % levelHeight, 32 * 1.5, 32 * 1.5, 20, 3, 4, "res/slime.png", renderer));
+        }
+    }
+    if (timeInSeconds == PHASE14)
+    {
+        for (int i = 0; i < 150; i++)
+        {
+            enemies.push_back(Meow(rand() % levelWidth, rand() % levelHeight, 32 * 1.5, 32 * 1.5, 20, 3, 4, "res/slime.png", renderer));
+        }
+    }
+    if (timeInSeconds == PHASE15)
+    {
+        for (int i = 0; i < 160; i++)
+        {
+            enemies.push_back(Meow(rand() % levelWidth, rand() % levelHeight, 32 * 1.5, 32 * 1.5, 20, 3, 4, "res/slime.png", renderer));
+        }
+        enemies.push_back(Meow(rand() % levelWidth, rand() % levelHeight, 50 * 1.5, 50 * 1.5, 300, 50, 30, "res/fireball2.png", renderer));
     }
 }
 
@@ -809,13 +881,13 @@ void Game::handlePlayerLevel()
         player.setExp(player.getExp() - player.getLevelExp());
         player.setLevel(5);
         player.setAttackCd(player.getAttackCd() - 0.3);
-        player.setBulletDamage(player.getBulletDamage() + 3);
+        player.setBulletDamage(player.getBulletDamage() + 5);
     }
 
     if (player.getLevel() == 5 and player.getExp() >= player.getLevelExp()) {
         player.setExp(player.getExp() - player.getLevelExp());
         player.setLevel(6);
-        player.setDamage(player.getDamage() + 2);
+        player.setDamage(player.getDamage() + 5);
         player.setShootCd(player.getShootCd() - 0.3);
     }
 
@@ -829,16 +901,22 @@ void Game::handlePlayerLevel()
     if (player.getLevel() == 7 and player.getExp() >= player.getLevelExp()) {
         player.setExp(player.getExp() - player.getLevelExp());
         player.setLevel(8);
-
+        player.setAttackCd(player.getAttackCd() - 0.3);
+        player.setBulletDamage(player.getBulletDamage() + 5);
     }
 
     if (player.getLevel() == 8 and player.getExp() >= player.getLevelExp()) {
         player.setExp(player.getExp() - player.getLevelExp());
         player.setLevel(9);
+        player.setDamage(player.getDamage() + 5);
+        player.setShootCd(player.getShootCd() - 0.3);
     }
 
     if (player.getLevel() == 9 and player.getExp() >= player.getLevelExp()) {
         player.setExp(player.getExp() - player.getLevelExp());
         player.setLevel(10);
+        player.setMaxHealth(player.getMaxHealth() + 10);
+        player.setHealth(player.getHealth() + 10);
+        player.setVelocity(player.getVelocity() + 0.2);
     }
 }
