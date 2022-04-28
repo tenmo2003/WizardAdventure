@@ -3,13 +3,16 @@
 
 Game::Game()
 {
-    init("Wizard Adventure: The Cuteness Invasion!!!", WINDOW_WIDTH, WINDOW_HEIGHT, false);
+    init("Wizard Adventure: The Weird Invasion!!!", WINDOW_WIDTH, WINDOW_HEIGHT, false);
     TTF_Init();
-    while(appRunning) {
+    Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
+    while (appRunning)
+    {
         isRunning = true;
         fullscreen = false;
         paused = false;
         canShoot = false;
+        won = false;
 
         srand(time(NULL));
 
@@ -18,15 +21,17 @@ Game::Game()
 
         menu();
 
-        if (!first) lastTime = 0;
+        lastTime = 0;
+        lastTimeF = 0;
+
         timeInSeconds = 0;
         startTime = SDL_GetTicks();
 
-        bgMusic.load("res/track.wav");
-        atkSound.load("res/atk.wav");
-        bulletSound.load("res/meow.wav");
-        deathSound.load("res/oof.wav");
-        hitSound.load("res/hit.wav");
+        bgMusic = Mix_LoadMUS("res/minecraft.wav");
+        atkSound = Mix_LoadWAV("res/atk.wav");
+        bulletSound = Mix_LoadWAV("res/meow.wav");
+        deathSound = Mix_LoadWAV("res/oof.wav");
+        hitSound = Mix_LoadWAV("res/hit.wav");
 
         map = IMG_LoadTexture(renderer, "res/mapr.png");
         SDL_QueryTexture(map, NULL, NULL, &levelWidth, &levelHeight);
@@ -42,17 +47,23 @@ Game::Game()
         player.setHealth(100);
 
         enemies.clear();
-        enemies.push_back(Meow(0, 0, 32 * 1.5, 32 * 1.5, 10, 1, 2, "res/slime.png", renderer));
+        bullets.clear();
+        // enemies.push_back(Meow(0, 0, 32 * 1.5, 32 * 1.5, 10, 1, 2, "res/slime.png", renderer));
         enemies.push_back(Meow(1600, 1900, 32 * 1.5, 32 * 1.5, 10, 1, 100, "res/slime.png", renderer));
-        
-        bgMusic.play();
+
+        Mix_PlayMusic(bgMusic, -1);
 
         while (isRunning)
         {
             thisTime = SDL_GetTicks() - startTime;
             if (thisTime >= (lastTime + 1000))
             {
-                timeInSeconds = thisTime / 1000;
+                if (!paused)
+                    timeInSeconds++;
+                if (timeInSeconds >= 300) {
+                    won = true;
+                    isRunning = false;
+                }
                 lastTime = thisTime;
                 fps = frameCount;
                 frameCount = 0;
@@ -73,32 +84,55 @@ Game::Game()
                 spawnEnemies();
             }
 
-            if (thisTime >= (lastTimeF + 100)) {
+            if (thisTime >= (lastTimeF + 100))
+            {
                 lastTimeF = thisTime;
                 if (player.getAttackTimer() > 0 and !player.isAttacking())
                 {
                     player.setAttackTimer(player.getAttackTimer() - 0.1);
                 }
-                if (canShoot) {
+                if (canShoot)
+                {
                     if (player.getShootTimer() > 0)
                     {
                         player.setShootTimer(player.getShootTimer() - 0.1);
                     }
                 }
             }
-            
-            if (bgMusic.donePlaying())
+
+            if (Mix_PlayingMusic() == 0)
             {
-                bgMusic.play();
+                Mix_PlayMusic(bgMusic, -1);
             }
-            
+
             if (!paused)
                 update();
             handleInputs();
             render();
         }
-        bgMusic.stop();
-        first = false;
+        if (appRunning) {
+            if (!won) {
+                write("You died! Press any key to continue.", 220, 720 / 2 - 50, {255, 255, 255}, 50);
+                SDL_RenderPresent(renderer);
+            }
+            else {
+                write("You won! Press any key to continue.", 220, 720 / 2 - 50, {255, 255, 255}, 50);
+                SDL_RenderPresent(renderer);
+            }
+        }
+        while (appRunning) {
+            bool pressed = false;
+            while (SDL_PollEvent(&e)) {
+                if (e.type == SDL_QUIT) {
+                    appRunning = false;
+                }
+                if (e.type == SDL_KEYDOWN)
+                    pressed = true;
+            }
+            if (pressed)
+                break;
+        }
+        Mix_HaltMusic();
     }
 }
 
@@ -116,7 +150,8 @@ void Game::init(const char *title, int width, int height, bool fullscreen)
     SDL_SetWindowTitle(window, title);
 }
 
-void Game::menu() {
+void Game::menu()
+{
     startButton.setSrc(0, 0, 195, 160);
     startButton.setDest(WINDOW_WIDTH / 2 - startButton.getSrc().w / 2, WINDOW_HEIGHT / 2 - startButton.getSrc().h / 2 - 70, 195, 160);
     startButton.setImage("res/start.png", renderer);
@@ -134,51 +169,65 @@ void Game::menu() {
         int choice = 1;
         bool chose = false;
         SDL_Texture *bg = IMG_LoadTexture(renderer, "res/bg.png");
-        while (true) {
-            //get input for selected choice
-            while (SDL_PollEvent(&e) != 0) {
-                if (e.type == SDL_QUIT) {
+        while (true)
+        {
+            // get input for selected choice
+            while (SDL_PollEvent(&e))
+            {
+                if (e.type == SDL_QUIT)
+                {
                     isRunning = false;
                     appRunning = false;
                     chose = true;
                     break;
                 }
-                if (e.type == SDL_KEYDOWN) {
-                    if (e.key.keysym.sym == SDLK_RETURN or e.key.keysym.sym == SDLK_SPACE) {
-                        if (choice == 1) {
+                if (e.type == SDL_KEYDOWN)
+                {
+                    if (e.key.keysym.sym == SDLK_RETURN or e.key.keysym.sym == SDLK_SPACE)
+                    {
+                        if (choice == 1)
+                        {
                             chose = true;
                             break;
                         }
-                        if (choice == 2) {
+                        if (choice == 2)
+                        {
                             isRunning = false;
                             appRunning = false;
                             chose = true;
                             break;
                         }
                     }
-                    if (e.key.keysym.sym == SDLK_UP or e.key.keysym.sym == SDLK_w) {
-                        if (choice == 1) {
+                    if (e.key.keysym.sym == SDLK_UP or e.key.keysym.sym == SDLK_w)
+                    {
+                        if (choice == 1)
+                        {
                             choice = 2;
                             arrow.setDest(exitButton.getDest().x - 140, exitButton.getDest().y, 213, 154);
                         }
-                        else if (choice == 2) {
+                        else if (choice == 2)
+                        {
                             choice = 1;
                             arrow.setDest(startButton.getDest().x - 140, startButton.getDest().y, 213, 154);
                         }
                     }
-                    if (e.key.keysym.sym == SDLK_DOWN or e.key.keysym.sym == SDLK_s) {
-                        if (choice == 2) {
+                    if (e.key.keysym.sym == SDLK_DOWN or e.key.keysym.sym == SDLK_s)
+                    {
+                        if (choice == 2)
+                        {
                             choice = 1;
                             arrow.setDest(startButton.getDest().x - 140, startButton.getDest().y, 213, 154);
                         }
-                        else if (choice == 1) {
+                        else if (choice == 1)
+                        {
                             choice = 2;
                             arrow.setDest(exitButton.getDest().x - 140, exitButton.getDest().y, 213, 154);
                         }
                     }
                 }
             }
-            if (chose) break;
+            if (chose)
+                break;
             SDL_RenderClear(renderer);
             SDL_RenderCopy(renderer, bg, NULL, NULL);
             startButton.draw(renderer);
@@ -201,7 +250,8 @@ void Game::handleInputs()
 {
     while (SDL_PollEvent(&e))
     {
-        if (e.type == SDL_QUIT) {
+        if (e.type == SDL_QUIT)
+        {
             isRunning = false;
             appRunning = false;
         }
@@ -245,7 +295,7 @@ void Game::handleInputs()
                     if (player.canAttack())
                     {
                         player.attack();
-                        atkSound.play();
+                        Mix_PlayChannel(-1, atkSound, 0);
                         if (player.getPlayerState() == IDLERIGHT or player.getPlayerState() == RUNRIGHT)
                             player.setDest(player.getDest().x - 49, player.getDest().y, 104 * 2, 48 * 2);
                         else if (player.getPlayerState() == IDLELEFT or player.getPlayerState() == RUNLEFT)
@@ -334,14 +384,16 @@ void Game::update()
 
     if (player.getHealth() <= 0)
     {
-        if (player.getPlayerState() != DYINGRIGHT) {
+        if (player.getPlayerState() != DYINGRIGHT)
+        {
             player.setPlayerState(DYINGRIGHT);
             player.setImage("res/player_dyingright.png", renderer);
-            deathSound.play();
+            Mix_PlayChannel(-1, deathSound, 0);
         }
         movable = 0;
         player.updateAnimation(DYINGRIGHT);
-        if (player.done()) {
+        if (player.done())
+        {
             isRunning = 0;
         }
         return;
@@ -367,14 +419,15 @@ void Game::update()
         reset = 1;
     }
 
-    if (player.canShoot()) {
+    if (player.canShoot())
+    {
         Object bullet;
         bullet.setImage("res/cat.png", renderer);
         bullet.setSrc(0, 0, 16, 16);
         bullet.setDest(player.getDest().x + player.getDest().w / 2 - 8, player.getDest().y + player.getDest().h / 2 - 8, 16, 16);
         bullet.setDir(mouseX - bullet.getDest().x, mouseY - bullet.getDest().y);
         bullets.push_back(bullet);
-        bulletSound.play();
+        Mix_PlayChannel(-1, bulletSound, 0);
     }
 
     handleAnimationsAndMovements();
@@ -388,7 +441,8 @@ void Game::update()
     {
         camera.x = (player.getDest().x + player.getDest().w / 2) - WINDOW_WIDTH / 2;
         camera.y = (player.getDest().y + player.getDest().h / 2) - WINDOW_HEIGHT / 2;
-        for (Meow&p : enemies) {
+        for (Meow &p : enemies)
+        {
             p.setTookDamage(false);
         }
     }
@@ -428,8 +482,10 @@ void Game::update()
 
         p.updateAnimation();
 
-        for (Object &b : bullets) {
-            if (collision(p, b)) {
+        for (Object &b : bullets)
+        {
+            if (collision(p, b))
+            {
                 p.setHealth(p.getHealth() - player.getBulletDamage());
                 bullets.erase(std::remove(bullets.begin(), bullets.end(), b), bullets.end());
             }
@@ -438,7 +494,7 @@ void Game::update()
         if (collisionPlayer(player, p) and player.isAttacking() and !p.tookDamage())
         {
             p.setHealth(p.getHealth() - player.getDamage());
-            //knockback p a bit
+            // knockback p a bit
             if (player.getPlayerState() == ATTACKLEFT)
             {
                 p.setDest(p.getDest().x - 30, p.getDest().y);
@@ -452,7 +508,7 @@ void Game::update()
         else if (collisionPlayer(player, p) and p.canAttack() and !player.isAttacking())
         {
             player.setHealth(player.getHealth() - p.getDamage());
-            hitSound.play();
+            Mix_PlayChannel(-1, hitSound, 0);
         }
 
         if (p.dead())
@@ -465,7 +521,6 @@ void Game::update()
     handlePlayerLevel();
 
     player.updateAnimation(player.getPlayerState());
-
 }
 
 void Game::render()
@@ -473,14 +528,15 @@ void Game::render()
     SDL_RenderClear(renderer);
     SDL_RenderCopy(renderer, map, &camera, NULL);
 
-    write(std::to_string(timeInSeconds / 60) + " : " + std::to_string(timeInSeconds % 60), 600, 20, {255, 255, 255, 255}, 50);
+    write(std::to_string(timeInSeconds / 60) + " : " + std::to_string(timeInSeconds % 60), 600, 15, {255, 255, 255, 255}, 40);
 
     for (Meow &p : enemies)
     {
         drawEntity(p, camera.x, camera.y, p.getFlip());
     }
 
-    for (Object &b : bullets) {
+    for (Object &b : bullets)
+    {
         drawEntity(b, camera.x, camera.y);
     }
 
@@ -498,7 +554,7 @@ void Game::render()
     else if (player.getPlayerState() == ATTACKLEFT)
         renderPlayerHpBar(player.getDest().x - camera.x + 11 + 105, player.getDest().y - 5 + player.getDest().h - camera.y, (float)player.getHealth() / player.getMaxHealth());
 
-    //get exp bar on the upper side of the screen
+    // get exp bar on the upper side of the screen
     renderPlayerExpBar(0, 0, (float)player.getExp() / player.getLevelExp());
 
     frameCount++;
@@ -517,6 +573,23 @@ void Game::clean()
     window = NULL;
     SDL_DestroyRenderer(renderer);
     renderer = NULL;
+    SDL_DestroyTexture(map);
+    map = NULL;
+
+    Mix_FreeChunk(hitSound);
+    hitSound = NULL;
+    Mix_FreeChunk(bulletSound);
+    bulletSound = NULL;
+    Mix_FreeChunk(deathSound);
+    deathSound = NULL;
+    Mix_FreeChunk(atkSound);
+    atkSound = NULL;
+
+    Mix_FreeMusic(bgMusic);
+    bgMusic = NULL;
+
+    enemies.clear();
+    bullets.clear();
 
     IMG_Quit();
     SDL_Quit();
@@ -590,7 +663,8 @@ bool Game::collisionPlayer(Object &a, Object &b)
         return false;
 }
 
-bool Game::collision(Object &a, Object &b) {
+bool Game::collision(Object &a, Object &b)
+{
     if (a.getDest().x <= b.getDest().x + b.getDest().w and a.getDest().x + a.getDest().w >= b.getDest().x and a.getDest().y <= b.getDest().y + b.getDest().h and a.getDest().y + a.getDest().h >= b.getDest().y)
         return true;
     else
@@ -627,11 +701,13 @@ void Game::handleAnimationsAndMovements()
         }
     }
 
-    for (Object& b : bullets) {
+    for (Object &b : bullets)
+    {
         float angle = atan2(b.getYDir(), b.getXDir());
         b.setDest(b.getDest().x + cos(angle) * 5, b.getDest().y + sin(angle) * 5);
 
-        if (b.getDest().x > levelWidth + 1000 or b.getDest().x < -1000 or b.getDest().y > levelHeight + 1000 or b.getDest().y < -1000) {
+        if (b.getDest().x > levelWidth + 1000 or b.getDest().x < -1000 or b.getDest().y > levelHeight + 1000 or b.getDest().y < -1000)
+        {
             bullets.erase(std::remove(bullets.begin(), bullets.end(), b), bullets.end());
         }
     }
@@ -857,7 +933,8 @@ void Game::spawnEnemies()
 
 void Game::handlePlayerLevel()
 {
-    if (player.getLevel() == 1 and player.getExp() >= player.getLevelExp()) {
+    if (player.getLevel() == 1 and player.getExp() >= player.getLevelExp())
+    {
         player.setExp(player.getExp() - player.getLevelExp());
         player.setLevel(2);
         player.setMaxHealth(player.getMaxHealth() + 10);
@@ -871,48 +948,55 @@ void Game::handlePlayerLevel()
         player.setHealth(player.getHealth() + 10);
     }
 
-    if (player.getLevel() == 3 and player.getExp() >= player.getLevelExp()) {
+    if (player.getLevel() == 3 and player.getExp() >= player.getLevelExp())
+    {
         player.setExp(player.getExp() - player.getLevelExp());
         player.setLevel(4);
         player.setShootCd(player.getShootCd() - 0.3);
     }
 
-    if (player.getLevel() == 4 and player.getExp() >= player.getLevelExp()) {
+    if (player.getLevel() == 4 and player.getExp() >= player.getLevelExp())
+    {
         player.setExp(player.getExp() - player.getLevelExp());
         player.setLevel(5);
         player.setAttackCd(player.getAttackCd() - 0.3);
         player.setBulletDamage(player.getBulletDamage() + 5);
     }
 
-    if (player.getLevel() == 5 and player.getExp() >= player.getLevelExp()) {
+    if (player.getLevel() == 5 and player.getExp() >= player.getLevelExp())
+    {
         player.setExp(player.getExp() - player.getLevelExp());
         player.setLevel(6);
         player.setDamage(player.getDamage() + 5);
         player.setShootCd(player.getShootCd() - 0.3);
     }
 
-    if (player.getLevel() == 6 and player.getExp() >= player.getLevelExp()) {
+    if (player.getLevel() == 6 and player.getExp() >= player.getLevelExp())
+    {
         player.setExp(player.getExp() - player.getLevelExp());
         player.setLevel(7);
         player.setMaxHealth(player.getMaxHealth() + 10);
         player.setHealth(player.getHealth() + 10);
     }
 
-    if (player.getLevel() == 7 and player.getExp() >= player.getLevelExp()) {
+    if (player.getLevel() == 7 and player.getExp() >= player.getLevelExp())
+    {
         player.setExp(player.getExp() - player.getLevelExp());
         player.setLevel(8);
         player.setAttackCd(player.getAttackCd() - 0.3);
         player.setBulletDamage(player.getBulletDamage() + 5);
     }
 
-    if (player.getLevel() == 8 and player.getExp() >= player.getLevelExp()) {
+    if (player.getLevel() == 8 and player.getExp() >= player.getLevelExp())
+    {
         player.setExp(player.getExp() - player.getLevelExp());
         player.setLevel(9);
         player.setDamage(player.getDamage() + 5);
         player.setShootCd(player.getShootCd() - 0.3);
     }
 
-    if (player.getLevel() == 9 and player.getExp() >= player.getLevelExp()) {
+    if (player.getLevel() == 9 and player.getExp() >= player.getLevelExp())
+    {
         player.setExp(player.getExp() - player.getLevelExp());
         player.setLevel(10);
         player.setMaxHealth(player.getMaxHealth() + 10);
