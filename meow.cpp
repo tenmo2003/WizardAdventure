@@ -16,7 +16,7 @@ void Meow::updateAnimation()
         }
     }
     else if (imageName == "res/frog.png") {
-        setSrc(40 * (6 - tick), 0, 40, 40);
+        setSrc(40 * tick, 0, 40, 40);
         if (begin > speed) {
             tick++;
             begin = 0;
