@@ -14,7 +14,6 @@
 #include "player.h"
 #include "defines.h"
 #include "meow.h"
-#include "audio.h"
 
 class Game
 {
@@ -47,7 +46,7 @@ public:
     void handlePlayerLevel();
 
 private:
-    bool isRunning, appRunning = true, first = true, fullscreen, paused;
+    bool isRunning, appRunning = true, fullscreen, paused, won;
     SDL_Window *window;
     SDL_Renderer *renderer;
 
@@ -59,7 +58,7 @@ private:
     int mouseX, mouseY;
 
     // fps related stuff
-    int thisTime, startTime, fps, frameCount, timerFPS, timeInSeconds, lastTime = 0, lastTimeF = 0;
+    int thisTime, startTime, fps, frameCount, timerFPS, timeInSeconds, lastTime, lastTimeF;
 
     // control
     bool l, r, u, d, charging, movable, reset, canShoot;
@@ -70,5 +69,6 @@ private:
     std::vector<Meow> enemies;
     std::vector<Object> bullets;
 
-    Audio bgMusic, atkSound, bulletSound, deathSound, hitSound;
+    Mix_Music *bgMusic;
+    Mix_Chunk *hitSound, *atkSound, *bulletSound, *deathSound;
 };
