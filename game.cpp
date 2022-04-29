@@ -528,8 +528,6 @@ void Game::render()
     SDL_RenderClear(renderer);
     SDL_RenderCopy(renderer, map, &camera, NULL);
 
-    write(std::to_string(timeInSeconds / 60) + " : " + std::to_string(timeInSeconds % 60), 600, 15, {255, 255, 255, 255}, 40);
-
     for (Meow &p : enemies)
     {
         drawEntity(p, camera.x, camera.y, p.getFlip());
@@ -556,6 +554,8 @@ void Game::render()
 
     // get exp bar on the upper side of the screen
     renderPlayerExpBar(0, 0, (float)player.getExp() / player.getLevelExp());
+    
+    write(std::to_string(timeInSeconds / 60) + " : " + std::to_string(timeInSeconds % 60), 600, 15, {255, 255, 255, 255}, 40);
 
     frameCount++;
     timerFPS = SDL_GetTicks() - startTime - thisTime;
