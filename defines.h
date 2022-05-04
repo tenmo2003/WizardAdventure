@@ -1,7 +1,10 @@
 #pragma once
 
-const int WINDOW_WIDTH = 1280;
-const int WINDOW_HEIGHT = 720;
+const int WINDOW_WIDTH = 1600;
+const int WINDOW_HEIGHT = 900;
+
+const int MAX_ORBS = 10;
+
 const int IDLERIGHT = 0;
 const int IDLELEFT = 1;
 const int RUNRIGHT = 3;
@@ -17,7 +20,7 @@ const int ATTACKLEFT = 12;
 const int ATTACK = 13;
 
 // define different timestamps for enemy spawn phases
-const int PHASE0 = 3;
+const int PHASE0 = 2;
 const int PHASE1 = 10;
 const int PHASE2 = 20;
 const int PHASE3 = 30;
