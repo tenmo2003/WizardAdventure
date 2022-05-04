@@ -1,7 +1,7 @@
 #pragma once
 
-const int WINDOW_WIDTH = 1600;
-const int WINDOW_HEIGHT = 900;
+const int WINDOW_WIDTH = 1280;
+const int WINDOW_HEIGHT = 720;
 
 const int MAX_ORBS = 10;
 
