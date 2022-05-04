@@ -51,6 +51,14 @@ Game::Game()
         // enemies.push_back(Meow(0, 0, 32 * 1.5, 32 * 1.5, 10, 1, 2, "res/slime.png", renderer));
         enemies.push_back(Meow(1600, 1900, 32 * 1.5, 32 * 1.5, 10, 1, 100, "res/slime.png", renderer));
 
+        for (int i = 0; i < MAX_ORBS; i++) {
+            Object temp;
+            temp.setImage("res/heart.png", renderer);
+            temp.setSrc(0, 0, 16, 16);
+            temp.setDest(rand() % levelWidth, rand() % levelHeight, 16, 16);
+            hpOrbs.push_back(temp);
+        }
+
         Mix_PlayMusic(bgMusic, -1);
 
         while (isRunning)
@@ -68,34 +76,38 @@ Game::Game()
                 fps = frameCount;
                 frameCount = 0;
 
-                if (player.getAttackTimer() > 0 and !player.isAttacking())
-                {
-                    player.setAttackTimer(player.getAttackTimer() - 1);
-                }
+                if (!paused) {
+                    if (player.getAttackTimer() > 0 and !player.isAttacking())
+                    {
+                        player.setAttackTimer(player.getAttackTimer() - 1);
+                    }
 
-                for (Meow &p : enemies)
-                {
-                    if (p.getAttackCd() > 0)
-                        p.setAttackCd(p.getAttackCd() - 1);
-                    // std::cout << p.getAttackCd() << std::endl;
-                }
+                    for (Meow &p : enemies)
+                    {
+                        if (p.getAttackCd() > 0)
+                            p.setAttackCd(p.getAttackCd() - 1);
+                        // std::cout << p.getAttackCd() << std::endl;
+                    }
 
-                // std::cout << timeInSeconds << std::endl;
-                spawnEnemies();
+                    // std::cout << timeInSeconds << std::endl;
+                    spawnEnemies();
+                }
             }
 
             if (thisTime >= (lastTimeF + 100))
             {
                 lastTimeF = thisTime;
-                if (player.getAttackTimer() > 0 and !player.isAttacking())
-                {
-                    player.setAttackTimer(player.getAttackTimer() - 0.1);
-                }
-                if (canShoot)
-                {
-                    if (player.getShootTimer() > 0)
+                if (!paused) {
+                    if (player.getAttackTimer() > 0 and !player.isAttacking())
                     {
-                        player.setShootTimer(player.getShootTimer() - 0.1);
+                        player.setAttackTimer(player.getAttackTimer() - 0.1);
+                    }
+                    if (canShoot)
+                    {
+                        if (player.getShootTimer() > 0)
+                        {
+                            player.setShootTimer(player.getShootTimer() - 0.1);
+                        }
                     }
                 }
             }
@@ -419,6 +431,14 @@ void Game::update()
         reset = 1;
     }
 
+    if (hpOrbs.size() < MAX_ORBS) {
+        Object temp;
+        temp.setImage("res/heart.png", renderer);
+        temp.setSrc(0, 0, 16, 16);
+        temp.setDest(rand() % levelWidth, rand() % levelHeight, 16, 16);
+        hpOrbs.push_back(temp);
+    }
+
     if (player.canShoot())
     {
         Object bullet;
@@ -518,6 +538,13 @@ void Game::update()
         }
     }
 
+    for (Object &h : hpOrbs) {
+        if (collisionPlayer(player, h)) {
+            hpOrbs.erase(std::remove(hpOrbs.begin(), hpOrbs.end(), h), hpOrbs.end());
+            player.setHealth(player.getHealth() + player.getMaxHealth() * 0.1);
+        }
+    }
+
     handlePlayerLevel();
 
     player.updateAnimation(player.getPlayerState());
@@ -527,6 +554,10 @@ void Game::render()
 {
     SDL_RenderClear(renderer);
     SDL_RenderCopy(renderer, map, &camera, NULL);
+
+    for (Object &h : hpOrbs) {
+        drawEntity(h, camera.x, camera.y);
+    }
 
     for (Meow &p : enemies)
     {
@@ -999,6 +1030,31 @@ void Game::handlePlayerLevel()
     {
         player.setExp(player.getExp() - player.getLevelExp());
         player.setLevel(10);
+        player.setMaxHealth(player.getMaxHealth() + 10);
+        player.setHealth(player.getHealth() + 10);
+        player.setVelocity(player.getVelocity() + 0.2);
+    }
+
+    if (player.getLevel() == 10 and player.getExp() >= player.getLevelExp())
+    {
+        player.setExp(player.getExp() - player.getLevelExp());
+        player.setLevel(11);
+        player.setAttackCd(player.getAttackCd() - 0.3);
+        player.setBulletDamage(player.getBulletDamage() + 5);
+    }
+
+    if (player.getLevel() == 11 and player.getExp() >= player.getLevelExp())
+    {
+        player.setExp(player.getExp() - player.getLevelExp());
+        player.setLevel(12);
+        player.setDamage(player.getDamage() + 5);
+        player.setShootCd(player.getShootCd() - 0.3);
+    }
+
+    if (player.getLevel() == 12 and player.getExp() >= player.getLevelExp())
+    {
+        player.setExp(player.getExp() - player.getLevelExp());
+        player.setLevel(13);
         player.setMaxHealth(player.getMaxHealth() + 10);
         player.setHealth(player.getHealth() + 10);
         player.setVelocity(player.getVelocity() + 0.2);
