@@ -67,7 +67,7 @@ private:
 
     Player player;
     std::vector<Meow> enemies;
-    std::vector<Object> bullets;
+    std::vector<Object> bullets, hpOrbs;
 
     Mix_Music *bgMusic;
     Mix_Chunk *hitSound, *atkSound, *bulletSound, *deathSound;
