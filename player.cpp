@@ -84,9 +84,9 @@ bool Player::canShoot()
         return false;
 }
 
-float Player::getLevelExp() {
+float Player::getLevelExp() const {
     if (level == 1)
-            return 5;
+        return 5;
     if (level == 2)
         return 10;
     if (level == 3)
@@ -105,4 +105,24 @@ float Player::getLevelExp() {
         return 125;
     if (level == 10)
         return 150;
+    if (level == 11)
+        return 180;
+    if (level == 12)
+        return 210;
+    if (level == 13)
+        return 240;
+    if (level == 14)
+        return 275;
+    if (level == 15)
+        return 315;
+    if (level == 16)
+        return 355;
+    if (level == 17)
+        return 400;
+    if (level == 18)
+        return 450;
+    if (level == 19)
+        return 500;
+    if (level == 20)
+        return 550;
 }
