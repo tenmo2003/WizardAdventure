@@ -11,7 +11,7 @@ Game::Game()
         isRunning = true;
         fullscreen = false;
         paused = false;
-        canShoot = false;
+        canShoot = true;
         won = false;
 
         srand(time(NULL));
@@ -24,6 +24,7 @@ Game::Game()
         lastTime = 0;
         lastTimeF = 0;
 
+        killCount = 0;
         timeInSeconds = 0;
         startTime = SDL_GetTicks();
 
@@ -43,6 +44,7 @@ Game::Game()
         player.setSrc(0, 0, 48, 48);
         player.setPlayerState(IDLERIGHT);
         player.setVelocity(2.5);
+        player.setLevel(16);
         player.setMaxHealth(100);
         player.setHealth(100);
 
@@ -124,11 +126,11 @@ Game::Game()
         }
         if (appRunning) {
             if (!won) {
-                write("You died! Press any key to continue.", 220, 720 / 2 - 50, {255, 255, 255}, 50);
+                write("You died! Press any key to continue.", WINDOW_WIDTH / 4, WINDOW_HEIGHT / 2 - 50, {255, 255, 255}, 50);
                 SDL_RenderPresent(renderer);
             }
             else {
-                write("You won! Press any key to continue.", 220, 720 / 2 - 50, {255, 255, 255}, 50);
+                write("You won! Press any key to continue.", WINDOW_WIDTH / 4, WINDOW_HEIGHT / 2 - 50, {255, 255, 255}, 50);
                 SDL_RenderPresent(renderer);
             }
         }
@@ -445,8 +447,63 @@ void Game::update()
         bullet.setImage("res/cat.png", renderer);
         bullet.setSrc(0, 0, 16, 16);
         bullet.setDest(player.getDest().x + player.getDest().w / 2 - 8, player.getDest().y + player.getDest().h / 2 - 8, 16, 16);
-        bullet.setDir(mouseX - bullet.getDest().x, mouseY - bullet.getDest().y);
+        // bullet.setDir(mouseX - bullet.getDest().x, mouseY - bullet.getDest().y);
+        bullet.setAngle(atan2(mouseY - bullet.getDest().y, mouseX - bullet.getDest().x));
         bullets.push_back(bullet);
+        if (player.getLevel() >= 5) {
+            Object bullet2;
+            bullet2.setImage("res/cat.png", renderer);
+            bullet2.setSrc(0, 0, 16, 16);
+            bullet2.setDest(player.getDest().x + player.getDest().w / 2 - 8, player.getDest().y + player.getDest().h / 2 - 8, 16, 16);
+            // bullet2.setDir(mouseX - 50 - bullet2.getDest().x, mouseY - 50 - bullet2.getDest().y);
+            bullet2.setAngle(bullet.getAngle() + 0.2);
+            bullets.push_back(bullet2);
+        }
+        if (player.getLevel() >= 7) {
+            Object bullet3;
+            bullet3.setImage("res/cat.png", renderer);
+            bullet3.setSrc(0, 0, 16, 16);
+            bullet3.setDest(player.getDest().x + player.getDest().w / 2 - 8, player.getDest().y + player.getDest().h / 2 - 8, 16, 16);
+            // bullet3.setDir(mouseX + 50 - bullet3.getDest().x, mouseY + 50 - bullet3.getDest().y);
+            bullet3.setAngle(bullet.getAngle() - 0.2);
+            bullets.push_back(bullet3);
+        }
+        if (player.getLevel() >= 9) {
+            Object bullet4;
+            bullet4.setImage("res/cat.png", renderer);
+            bullet4.setSrc(0, 0, 16, 16);
+            bullet4.setDest(player.getDest().x + player.getDest().w / 2 - 8, player.getDest().y + player.getDest().h / 2 - 8, 16, 16);
+            // bullet4.setDir(mouseX - 100 - bullet4.getDest().x, mouseY - 100 - bullet4.getDest().y);
+            bullet4.setAngle(bullet.getAngle() + 0.4);
+            bullets.push_back(bullet4);
+        }
+        if (player.getLevel() >= 11) {
+            Object bullet5;
+            bullet5.setImage("res/cat.png", renderer);
+            bullet5.setSrc(0, 0, 16, 16);
+            bullet5.setDest(player.getDest().x + player.getDest().w / 2 - 8, player.getDest().y + player.getDest().h / 2 - 8, 16, 16);
+            // bullet5.setDir(mouseX + 100 - bullet5.getDest().x, mouseY + 100 - bullet5.getDest().y);
+            bullet5.setAngle(bullet.getAngle() - 0.4);
+            bullets.push_back(bullet5);
+        }
+        if (player.getLevel() >= 13) {
+            Object bullet6;
+            bullet6.setImage("res/cat.png", renderer);
+            bullet6.setSrc(0, 0, 16, 16);
+            bullet6.setDest(player.getDest().x + player.getDest().w / 2 - 8, player.getDest().y + player.getDest().h / 2 - 8, 16, 16);
+            // bullet6.setDir(mouseX - 150 - bullet6.getDest().x, mouseY - 150 - bullet6.getDest().y);
+            bullet6.setAngle(bullet.getAngle() + 0.6);
+            bullets.push_back(bullet6);
+        }
+        if (player.getLevel() >= 15) {
+            Object bullet7;
+            bullet7.setImage("res/cat.png", renderer);
+            bullet7.setSrc(0, 0, 16, 16);
+            bullet7.setDest(player.getDest().x + player.getDest().w / 2 - 8, player.getDest().y + player.getDest().h / 2 - 8, 16, 16);
+            // bullet7.setDir(mouseX + 150 - bullet7.getDest().x, mouseY + 150 - bullet7.getDest().y);
+            bullet7.setAngle(bullet.getAngle() - 0.6);
+            bullets.push_back(bullet7);
+        }
         Mix_PlayChannel(-1, bulletSound, 0);
     }
 
@@ -535,6 +592,7 @@ void Game::update()
         {
             player.setExp(player.getExp() + p.getExp());
             enemies.erase(std::remove(enemies.begin(), enemies.end(), p), enemies.end());
+            killCount++;
         }
     }
 
@@ -585,8 +643,10 @@ void Game::render()
 
     // get exp bar on the upper side of the screen
     renderPlayerExpBar(0, 0, (float)player.getExp() / player.getLevelExp());
-    
-    write(std::to_string(timeInSeconds / 60) + " : " + std::to_string(timeInSeconds % 60), 600, 15, {255, 255, 255, 255}, 40);
+
+    write(std::to_string(timeInSeconds / 60) + " : " + std::to_string(timeInSeconds % 60), WINDOW_WIDTH / 2 - 40, 15, {255, 255, 255, 255}, 40);
+    write("Player level: " + std::to_string(player.getLevel()), WINDOW_WIDTH - 5 - 200, 15, {255, 255, 255, 255}, 25);
+    write("Slayed: " + std::to_string(killCount), 5, 15, {255, 255, 255, 255}, 25);
 
     frameCount++;
     timerFPS = SDL_GetTicks() - startTime - thisTime;
@@ -735,7 +795,7 @@ void Game::handleAnimationsAndMovements()
     for (Object &b : bullets)
     {
         float angle = atan2(b.getYDir(), b.getXDir());
-        b.setDest(b.getDest().x + cos(angle) * 5, b.getDest().y + sin(angle) * 5);
+        b.setDest(b.getDest().x + cos(b.getAngle()) * 5, b.getDest().y + sin(b.getAngle()) * 5);
 
         if (b.getDest().x > levelWidth + 1000 or b.getDest().x < -1000 or b.getDest().y > levelHeight + 1000 or b.getDest().y < -1000)
         {
@@ -795,7 +855,7 @@ void Game::handleAnimationsAndMovements()
                 player.setImage("res/player_runleft.png", renderer);
                 player.setPlayerState(RUNLEFT);
             }
-            if (player.getDest().y <= levelHeight + 800 * 9 / 16 - player.getDest().h)
+            if (player.getDest().y <= levelHeight + 440 - player.getDest().h)
                 player.setDest(player.getDest().x, player.getDest().y + player.getVelocity() / 1.25, player.getDest().w, player.getDest().h);
         }
 
@@ -983,7 +1043,7 @@ void Game::handlePlayerLevel()
     {
         player.setExp(player.getExp() - player.getLevelExp());
         player.setLevel(4);
-        player.setShootCd(player.getShootCd() - 0.3);
+        player.setMaxHealth(player.getMaxHealth() + 10);
     }
 
     if (player.getLevel() == 4 and player.getExp() >= player.getLevelExp())
@@ -999,7 +1059,7 @@ void Game::handlePlayerLevel()
         player.setExp(player.getExp() - player.getLevelExp());
         player.setLevel(6);
         player.setDamage(player.getDamage() + 5);
-        player.setShootCd(player.getShootCd() - 0.3);
+        player.setShootCd(player.getShootCd() - player.getShootCd() * 0.1);
     }
 
     if (player.getLevel() == 6 and player.getExp() >= player.getLevelExp())
@@ -1014,7 +1074,7 @@ void Game::handlePlayerLevel()
     {
         player.setExp(player.getExp() - player.getLevelExp());
         player.setLevel(8);
-        player.setAttackCd(player.getAttackCd() - 0.3);
+        player.setMaxHealth(player.getMaxHealth() + 10);
         player.setBulletDamage(player.getBulletDamage() + 5);
     }
 
@@ -1023,7 +1083,7 @@ void Game::handlePlayerLevel()
         player.setExp(player.getExp() - player.getLevelExp());
         player.setLevel(9);
         player.setDamage(player.getDamage() + 5);
-        player.setShootCd(player.getShootCd() - 0.3);
+     player.setShootCd(player.getShootCd() - player.getShootCd() * 0.1);
     }
 
     if (player.getLevel() == 9 and player.getExp() >= player.getLevelExp())
@@ -1048,7 +1108,7 @@ void Game::handlePlayerLevel()
         player.setExp(player.getExp() - player.getLevelExp());
         player.setLevel(12);
         player.setDamage(player.getDamage() + 5);
-        player.setShootCd(player.getShootCd() - 0.3);
+        player.setShootCd(player.getShootCd() - player.getShootCd() * 0.1);
     }
 
     if (player.getLevel() == 12 and player.getExp() >= player.getLevelExp())
@@ -1057,6 +1117,65 @@ void Game::handlePlayerLevel()
         player.setLevel(13);
         player.setMaxHealth(player.getMaxHealth() + 10);
         player.setHealth(player.getHealth() + 10);
+        player.setShootCd(player.getShootCd() - player.getShootCd() * 0.2);
+    }
+
+    if (player.getLevel() == 13 and player.getExp() >= player.getLevelExp())
+    {
+        player.setExp(player.getExp() - player.getLevelExp());
+        player.setLevel(14);
+        player.setMaxHealth(player.getMaxHealth() + 10);
+        player.setBulletDamage(player.getBulletDamage() + 5);
+    }
+
+    if (player.getLevel() == 14 and player.getExp() >= player.getLevelExp())
+    {
+        player.setExp(player.getExp() - player.getLevelExp());
+        player.setLevel(15);
+        player.setDamage(player.getDamage() + 5);
+        player.setShootCd(player.getShootCd() - player.getShootCd() * 0.2);
+    }
+
+    if (player.getLevel() == 15 and player.getExp() >= player.getLevelExp())
+    {
+        player.setExp(player.getExp() - player.getLevelExp());
+        player.setLevel(16);
+        player.setMaxHealth(player.getMaxHealth() + 20);
+        player.setHealth(player.getHealth() + 10);
         player.setVelocity(player.getVelocity() + 0.2);
+    }
+
+    if (player.getLevel() == 16 and player.getExp() >= player.getLevelExp())
+    {
+        player.setExp(player.getExp() - player.getLevelExp());
+        player.setLevel(17);
+        player.setAttackCd(player.getAttackCd() - 0.3);
+        player.setBulletDamage(player.getBulletDamage() + 5);
+    }
+
+    if (player.getLevel() == 17 and player.getExp() >= player.getLevelExp())
+    {
+        player.setExp(player.getExp() - player.getLevelExp());
+        player.setLevel(18);
+        player.setDamage(player.getDamage() + 5);
+        player.setShootCd(player.getShootCd() - player.getShootCd() * 0.1);
+    }
+
+    if (player.getLevel() == 18 and player.getExp() >= player.getLevelExp())
+    {
+        player.setExp(player.getExp() - player.getLevelExp());
+        player.setLevel(19);
+        player.setMaxHealth(player.getMaxHealth() + 10);
+        player.setHealth(player.getHealth() + 10);
+        player.setShootCd(player.getShootCd() - player.getShootCd() * 0.1);
+    }
+
+    if (player.getLevel() == 19 and player.getExp() >= player.getLevelExp())
+    {
+        player.setExp(player.getExp() - player.getLevelExp());
+        player.setLevel(20);
+        player.setMaxHealth(player.getMaxHealth() + 10);
+        player.setBulletDamage(player.getBulletDamage() + 5);
+        player.setDamage(player.getDamage() + 5);
     }
 }
