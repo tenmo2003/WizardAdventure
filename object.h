@@ -23,6 +23,9 @@ public:
     float getXDir() const { return xDir; }
     float getYDir() const { return yDir; }
 
+    void setAngle(float a) { angle = a; }
+    float getAngle() const { return angle; }
+
     void setImage(std::string fileName, SDL_Renderer *renderer);
     SDL_Texture* getObject() const { return tex; }
 
@@ -39,4 +42,5 @@ private:
     SDL_Texture *tex;
 
     float xDir, yDir;
+    float angle;
 };
