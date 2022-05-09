@@ -67,6 +67,7 @@ private:
 
     Player player;
     std::vector<Meow> enemies;
+    int killCount;
     std::vector<Object> bullets, hpOrbs;
 
     Mix_Music *bgMusic;
