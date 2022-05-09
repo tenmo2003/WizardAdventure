@@ -11,7 +11,7 @@ class Player : public Object
 public:
     Player() {}
 
-    void setHealth(int h) {
+    void setHealth(int h) { 
         health = h;
         if (health <= 0)
             health = 0;
@@ -44,7 +44,7 @@ public:
     bool canAttack();
     void setAttackTimer(float t) { attackTimer = t; }
     float getAttackTimer() const { return attackTimer; }
-    void setAttackCd(int cd) { attackCd = cd; }
+    void setAttackCd(float cd) { attackCd = cd; }
     float getAttackCd() const { return attackCd; }
 
     bool canShoot();
@@ -58,12 +58,12 @@ public:
 
     void setExp(float a) { exp = a; }
     float getExp() const { return exp; }
-
+    
     void setLevel(int l) { level = l; }
     int getLevel() const { return level; }
-    float getLevelExp();
+    float getLevelExp() const;
 
-    bool done() {
+    bool done() { 
         if (doneDying == true) {
             doneDying = false;
             return true;
