@@ -90,39 +90,39 @@ float Player::getLevelExp() const {
     if (level == 2)
         return 10;
     if (level == 3)
-        return 20;
+        return 25;
     if (level == 4)
-        return 30;
+        return 43;
     if (level == 5)
-        return 45;
+        return 65;
     if (level == 6)
-        return 60;
+        return 90;
     if (level == 7)
-        return 80;
+        return 120;
     if (level == 8)
-        return 100;
-    if (level == 9)
-        return 125;
-    if (level == 10)
         return 150;
+    if (level == 9)
+        return 185;
+    if (level == 10)
+        return 220;
     if (level == 11)
-        return 180;
+        return 260;
     if (level == 12)
-        return 210;
+        return 300;
     if (level == 13)
-        return 240;
+        return 350;
     if (level == 14)
-        return 275;
-    if (level == 15)
-        return 315;
-    if (level == 16)
-        return 355;
-    if (level == 17)
         return 400;
-    if (level == 18)
+    if (level == 15)
         return 450;
+    if (level == 16)
+        return 520;
+    if (level == 17)
+        return 620;
+    if (level == 18)
+        return 730;
     if (level == 19)
-        return 500;
+        return 840;
     if (level == 20)
-        return 550;
+        return 960;
 }
