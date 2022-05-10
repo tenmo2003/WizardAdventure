@@ -3,7 +3,7 @@
 const int WINDOW_WIDTH = 1280;
 const int WINDOW_HEIGHT = 720;
 
-const int MAX_ORBS = 10;
+const int MAX_ORBS = 7;
 
 const int IDLERIGHT = 0;
 const int IDLELEFT = 1;
@@ -29,13 +29,14 @@ const int PHASE5 = 60;
 const int PHASE6 = 80;
 const int PHASE7 = 120;
 const int PHASE8 = 140;
-const int PHASE9 = 170;
-const int PHASE10 = 200;
-const int PHASE11 = 230;
-const int PHASE12 = 270;
-const int PHASE13 = 320;
-const int PHASE14 = 370;
-const int PHASE15 = 450;
-const int PHASE16 = 500;
-const int PHASE17 = 550;
-const int PHASE18 = 600;
+const int PHASE9 = 160;
+const int PHASE10 = 190;
+const int PHASE11 = 220;
+const int PHASE12 = 250;
+const int PHASE13 = 290;
+const int PHASE14 = 340;
+const int PHASE15 = 390;
+const int PHASE16 = 450;
+const int PHASE17 = 510;
+const int PHASE18 = 580;
+const int PHASE19 = 600;
