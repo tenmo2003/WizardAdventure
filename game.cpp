@@ -939,7 +939,7 @@ void Game::spawnEnemies()
     {
         for (int i = 0; i < 50; i++)
         {
-            enemies.push_back(Meow(rand() % levelWidth, rand() % levelHeight, 32 * 1.5, 32 * 1.5, 13, 1, 2, "res/slime.png", renderer));
+            enemies.push_back(Meow(rand() % levelWidth, rand() % levelHeight, 32 * 1.5, 32 * 1.5, 13, 1, 4, "res/slime.png", renderer));
         }
     }
     if (timeInSeconds == PHASE5)
@@ -982,7 +982,7 @@ void Game::spawnEnemies()
     {
         for (int i = 0; i < 110; i++)
         {
-            enemies.push_back(Meow(rand() % levelWidth, rand() % levelHeight, 32 * 1.5, 32 * 1.5, 25, 3, 7, "res/slime.png", renderer));
+            enemies.push_back(Meow(rand() % levelWidth, rand() % levelHeight, 32 * 1.5, 32 * 1.5, 25, 3, 8, "res/slime.png", renderer));
         }
         enemies.push_back(Meow(rand() % levelWidth, rand() % levelHeight, 50 * 1.5, 50 * 1.5, 800, 125, 60, "res/fireball.png", renderer));
     }
@@ -990,14 +990,14 @@ void Game::spawnEnemies()
     {
         for (int i = 0; i < 120; i++)
         {
-            enemies.push_back(Meow(rand() % levelWidth, rand() % levelHeight, 32 * 1.5, 32 * 1.5, 25, 3, 7, "res/slime.png", renderer));
+            enemies.push_back(Meow(rand() % levelWidth, rand() % levelHeight, 32 * 1.5, 32 * 1.5, 25, 3, 8, "res/slime.png", renderer));
         }
     }
     if (timeInSeconds == PHASE12)
     {
         for (int i = 0; i < 130; i++)
         {
-            enemies.push_back(Meow(rand() % levelWidth, rand() % levelHeight, 32 * 1.5, 32 * 1.5, 25, 3, 7, "res/slime.png", renderer));
+            enemies.push_back(Meow(rand() % levelWidth, rand() % levelHeight, 32 * 1.5, 32 * 1.5, 25, 3, 8, "res/slime.png", renderer));
         }
     }
     if (timeInSeconds == PHASE13)
