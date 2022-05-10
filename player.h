@@ -79,7 +79,7 @@ private:
     float exp = 0;
     int level = 1;
 
-    float attackTimer = 0, attackCd = 3, shootTimer = 1, shootCd = 2;
+    float attackTimer = 0, attackCd = 2.5, shootTimer = 1, shootCd = 2;
 
     int playerState;
     int begin, tick = 0, speed = 7;
