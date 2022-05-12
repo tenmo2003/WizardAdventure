@@ -19,10 +19,6 @@ public:
     void setDest(int ,int w, int h);
     SDL_Rect getDest() const { return dest; }
 
-    void setDir(float x, float y) { xDir = x; yDir = y; }
-    float getXDir() const { return xDir; }
-    float getYDir() const { return yDir; }
-
     void setAngle(float a) { angle = a; }
     float getAngle() const { return angle; }
 
@@ -41,6 +37,5 @@ private:
     SDL_Rect dest;
     SDL_Texture *tex;
 
-    float xDir, yDir;
     float angle;
 };

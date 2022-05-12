@@ -20,7 +20,9 @@ class Game
 public:
     Game();
     ~Game();
+
     void init(const char *title, int width, int height, bool fullscreen);
+    void renderInit();
     void menu();
     void handleInputs();
     void handleAnimationsAndMovements();
@@ -63,7 +65,7 @@ private:
     // control
     bool l, r, u, d, charging, movable, reset, canShoot;
 
-    Object startButton, exitButton, credit, arrow;
+    //Object startButton, exitButton, resumeButton, credit, arrow;
 
     Player player;
     std::vector<Meow> enemies;

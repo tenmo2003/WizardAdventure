@@ -26,6 +26,17 @@ void Meow::updateAnimation()
             tick = 0;
         }
     }
+    else if (imageName == "res/racoon.png") {
+        setSrc(60 * tick, 0, 60, 60);
+        if (begin > speed) {
+            tick++;
+            begin = 0;
+        }
+        begin++;
+        if (tick >= 5) {
+            tick = 0;
+        }
+    }
     else {
         setSrc(32 * tick, 32, 32, 32);
         if (begin > speed)

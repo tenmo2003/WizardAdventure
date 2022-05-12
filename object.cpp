@@ -1,7 +1,7 @@
 #include "object.h"
 
 Object::Object() {
-
+    
 }
 
 void Object::setSrc(int x, int y, int w, int h) {
