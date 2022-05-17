@@ -21,7 +21,7 @@ Tóm tắt:
   
 Chức năng:
 
-  -WASD để di chuyển, phím cách(spacebar) để dùng đòn băng, di chuyển chuột điều khiển hướng đạn bắn, đạn sẽ bắn về vị trí con trỏ chuột trong cửa số.
+  -WASD để di chuyển, phím cách(spacebar) để dùng đòn băng, di chuyển chuột điều khiển hướng đạn bắn, đạn sẽ bắn về vị trí con trỏ chuột trong cửa sổ. Khi lên cấp, số đạn sẽ được tăng dần và bắn theo hướng tỏa ra.
   
   -F11: chế độ toàn màn hình, P: dừng trò chơi (khi đang chơi).
   
