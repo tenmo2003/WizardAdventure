@@ -23,6 +23,7 @@ public:
     float getAngle() const { return angle; }
 
     void setImage(std::string fileName, SDL_Renderer *renderer);
+    
     SDL_Texture* getObject() const { return tex; }
 
     bool operator==(const Object &other) const

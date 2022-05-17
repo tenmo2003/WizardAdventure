@@ -3,9 +3,7 @@
 
 Game::Game()
 {
-    init("Wizard Adventure: The Weird Invasion!!!", WINDOW_WIDTH, WINDOW_HEIGHT, false);
-    TTF_Init();
-    Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
+    initSDL("Wizard Adventure: The Weird Invasion!!!", WINDOW_WIDTH, WINDOW_HEIGHT, false);
     while (appRunning)
     {
         isRunning = true;
@@ -26,7 +24,7 @@ Game::Game()
         timeInSeconds = 0;
         startTime = SDL_GetTicks();
 
-        renderInit();
+        initGame();
 
         Mix_PlayMusic(bgMusic, -1);
 
@@ -47,10 +45,8 @@ Game::Game()
                     {
                         if (p.getAttackCd() > 0)
                             p.setAttackCd(p.getAttackCd() - 1);
-                        // std::cout << p.getAttackCd() << std::endl;
                     }
 
-                    // std::cout << timeInSeconds << std::endl;
                     spawnEnemies();
                 }
             }
@@ -122,16 +118,20 @@ Game::~Game()
     clean();
 }
 
-void Game::init(const char *title, int width, int height, bool fullscreen)
+void Game::initSDL(const char *title, int width, int height, bool fullscreen)
 {
     if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
         std::cout << "Initialization failed" << std::endl;
     if (SDL_CreateWindowAndRenderer(width, height, 0, &window, &renderer) < 0)
         std::cout << "Window creation failed" << std::endl;
     SDL_SetWindowTitle(window, title);
+    
+    TTF_Init();
+    
+    Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
 }
 
-void Game::renderInit() {
+void Game::initGame() {
     bgMusic = Mix_LoadMUS("res/track.wav");
     atkSound = Mix_LoadWAV("res/atk.wav");
     bulletSound = Mix_LoadWAV("res/fire.wav");
@@ -139,7 +139,7 @@ void Game::renderInit() {
     hitSound = Mix_LoadWAV("res/hit.wav");
 
     map = IMG_LoadTexture(renderer, "res/mapr.png");
-    SDL_QueryTexture(map, NULL, NULL, &levelWidth, &levelHeight);
+    SDL_QueryTexture(map, NULL, NULL, &mapWidth, &mapHeight);
     camera = {0, 0, 480, 480 * 9 / 16};
 
     player.setImage("res/player_idleright.png", renderer);
@@ -158,26 +158,30 @@ void Game::renderInit() {
     //enemies.push_back(Meow(1600, 1900, 32 * 1.5, 32 * 1.5, 10, 1, 100, "res/slime.png", renderer));
 
     for (int i = 0; i < MAX_ORBS; i++) {
-        Object temp;
-        temp.setImage("res/heart.png", renderer);
-        temp.setSrc(0, 0, 16, 16);
-        temp.setDest(rand() % (levelWidth + 750) , rand() % (levelHeight + 350), 16, 16);
-        hpOrbs.push_back(temp);
+        Object orb;
+        orb.setImage("res/heart.png", renderer);
+        orb.setSrc(0, 0, 16, 16);
+        orb.setDest(rand() % (mapWidth + 750) , rand() % (mapHeight + 350), 16, 16);
+        hpOrbs.push_back(orb);
     }
 }
 
 void Game::menu()
 {
     Object startButton, exitButton, credit, arrow;
+
     startButton.setSrc(0, 0, 195, 160);
     startButton.setDest(WINDOW_WIDTH / 2 - startButton.getSrc().w / 2, WINDOW_HEIGHT / 2 - startButton.getSrc().h / 2 - 70, 195, 160);
     startButton.setImage("res/start.png", renderer);
+
     exitButton.setSrc(0, 0, 156, 160);
     exitButton.setDest(WINDOW_WIDTH / 2 - exitButton.getSrc().w / 2, WINDOW_HEIGHT / 2 - exitButton.getSrc().h / 2 + 70, 156, 160);
     exitButton.setImage("res/exit.png", renderer);
+
     arrow.setSrc(0, 0, 213, 154);
     arrow.setDest(startButton.getDest().x - 140, startButton.getDest().y, 213, 154);
     arrow.setImage("res/arrow.png", renderer);
+
     credit.setSrc(0, 0, 441, 123);
     credit.setDest(0, 0, 441 / 1.5, 123 / 1.5);
     credit.setImage("res/credit.png", renderer);
@@ -186,9 +190,8 @@ void Game::menu()
         int choice = 1;
         bool chose = false;
         SDL_Texture *bg = IMG_LoadTexture(renderer, "res/bg.png");
-        while (true)
+        while (!chose)
         {
-            // get input for selected choice
             while (SDL_PollEvent(&e))
             {
                 if (e.type == SDL_QUIT)
@@ -243,20 +246,22 @@ void Game::menu()
                     }
                 }
             }
-            if (chose)
-                break;
+
             SDL_RenderClear(renderer);
             SDL_RenderCopy(renderer, bg, NULL, NULL);
+
             startButton.draw(renderer);
             exitButton.draw(renderer);
             arrow.draw(renderer);
             credit.draw(renderer);
+
             thisTime = SDL_GetTicks();
             timerFPS = SDL_GetTicks() - thisTime;
             if (timerFPS < (1000 / 30))
             {
                 SDL_Delay((1000 / 30) - timerFPS);
             }
+
             SDL_RenderPresent(renderer);
         }
         SDL_DestroyTexture(bg);
@@ -450,7 +455,7 @@ void Game::update()
         Object temp;
         temp.setImage("res/heart.png", renderer);
         temp.setSrc(0, 0, 16, 16);
-        temp.setDest(rand() % (levelWidth + 750) , rand() % (levelHeight + 350), 16, 16);
+        temp.setDest(rand() % (mapWidth + 750) , rand() % (mapHeight + 350), 16, 16);
         hpOrbs.push_back(temp);
     }
 
@@ -542,10 +547,10 @@ void Game::update()
     if (camera.y < 0)
         camera.y = 0;
 
-    if (camera.x + camera.w >= levelWidth)
-        camera.x = levelWidth - camera.w;
-    if (camera.y + camera.h >= levelHeight)
-        camera.y = levelHeight - camera.h;
+    if (camera.x + camera.w >= mapWidth)
+        camera.x = mapWidth - camera.w;
+    if (camera.y + camera.h >= mapHeight)
+        camera.y = mapHeight - camera.h;
 
     for (Meow &p : enemies)
     {
@@ -724,25 +729,6 @@ void Game::write(const std::string &msg, int x, int y, SDL_Color color, int size
     TTF_CloseFont(font);
 }
 
-void Game::draw(Object &object)
-{
-    SDL_Rect src = object.getSrc();
-    SDL_Rect dest = object.getDest();
-    SDL_Texture *tex = object.getObject();
-    SDL_RenderCopy(renderer, tex, &src, &dest);
-}
-
-void Game::draw(Object &object, bool flip)
-{
-    SDL_Rect src = object.getSrc();
-    SDL_Rect dest = object.getDest();
-    SDL_Texture *tex = object.getObject();
-    if (!flip)
-        SDL_RenderCopyEx(renderer, tex, &src, &dest, 0, NULL, SDL_FLIP_NONE);
-    else
-        SDL_RenderCopyEx(renderer, tex, &src, &dest, 0, NULL, SDL_FLIP_HORIZONTAL);
-}
-
 void Game::drawEntity(Object &entity, int camX, int camY)
 {
     SDL_Rect src = entity.getSrc();
@@ -816,7 +802,7 @@ void Game::handleAnimationsAndMovements()
     {
         b.setDest(b.getDest().x + cos(b.getAngle()) * 5, b.getDest().y + sin(b.getAngle()) * 5);
 
-        if (b.getDest().x > levelWidth + 1000 or b.getDest().x < -1000 or b.getDest().y > levelHeight + 1000 or b.getDest().y < -1000)
+        if (b.getDest().x > mapWidth + 1000 or b.getDest().x < -1000 or b.getDest().y > mapHeight + 1000 or b.getDest().y < -1000)
         {
             bullets.erase(std::remove(bullets.begin(), bullets.end(), b), bullets.end());
         }
@@ -842,7 +828,7 @@ void Game::handleAnimationsAndMovements()
                 player.setImage("res/player_runright.png", renderer);
                 player.setPlayerState(RUNRIGHT);
             }
-            if (player.getDest().x <= levelWidth + 800 - player.getDest().w)
+            if (player.getDest().x <= mapWidth + 800 - player.getDest().w)
                 player.setDest(player.getDest().x + player.getVelocity(), player.getDest().y, player.getDest().w, player.getDest().h);
         }
 
@@ -874,7 +860,7 @@ void Game::handleAnimationsAndMovements()
                 player.setImage("res/player_runleft.png", renderer);
                 player.setPlayerState(RUNLEFT);
             }
-            if (player.getDest().y <= levelHeight + 440 - player.getDest().h)
+            if (player.getDest().y <= mapHeight + 440 - player.getDest().h)
                 player.setDest(player.getDest().x, player.getDest().y + player.getVelocity() / 1.25, player.getDest().w, player.getDest().h);
         }
 
@@ -928,145 +914,145 @@ void Game::spawnEnemies()
     {
         for (int i = 0; i < 10; i++)
         {
-            enemies.push_back(Meow(rand() % (levelWidth + 750) , rand() % (levelHeight + 350), 32 * 1.5, 32 * 1.5, 5, 1, 2, "res/slime.png", renderer));
+            enemies.push_back(Meow(rand() % (mapWidth + 750) , rand() % (mapHeight + 350), 32 * 1.5, 32 * 1.5, 5, 1, 2, "res/slime.png", renderer));
         }
     }
     if (timeInSeconds == PHASE1)
     {
         for (int i = 0; i < 20; i++)
         {
-            enemies.push_back(Meow(rand() % (levelWidth + 750) , rand() % (levelHeight + 350), 32 * 1.5, 32 * 1.5, 5, 1, 2, "res/slime.png", renderer));
+            enemies.push_back(Meow(rand() % (mapWidth + 750) , rand() % (mapHeight + 350), 32 * 1.5, 32 * 1.5, 5, 1, 2, "res/slime.png", renderer));
         }
     }
     if (timeInSeconds == PHASE2)
     {
         for (int i = 0; i < 30; i++)
         {
-            enemies.push_back(Meow(rand() % (levelWidth + 750) , rand() % (levelHeight + 350), 32 * 1.5, 32 * 1.5, 5, 1, 2, "res/slime.png", renderer));
+            enemies.push_back(Meow(rand() % (mapWidth + 750) , rand() % (mapHeight + 350), 32 * 1.5, 32 * 1.5, 5, 1, 2, "res/slime.png", renderer));
         }
     }
     if (timeInSeconds == PHASE3)
     {
         for (int i = 0; i < 40; i++)
         {
-            enemies.push_back(Meow(rand() % (levelWidth + 750) , rand() % (levelHeight + 350), 32 * 1.5, 32 * 1.5, 5, 1, 2, "res/slime.png", renderer));
+            enemies.push_back(Meow(rand() % (mapWidth + 750) , rand() % (mapHeight + 350), 32 * 1.5, 32 * 1.5, 5, 1, 2, "res/slime.png", renderer));
         }
     }
     if (timeInSeconds == PHASE4)
     {
         for (int i = 0; i < 50; i++)
         {
-            enemies.push_back(Meow(rand() % (levelWidth + 750) , rand() % (levelHeight + 350), 32 * 1.5, 32 * 1.5, 13, 1, 4, "res/slime.png", renderer));
+            enemies.push_back(Meow(rand() % (mapWidth + 750) , rand() % (mapHeight + 350), 32 * 1.5, 32 * 1.5, 10, 1, 4, "res/slime.png", renderer));
         }
     }
     if (timeInSeconds == PHASE5)
     {
         for (int i = 0; i < 60; i++)
         {
-            enemies.push_back(Meow(rand() % (levelWidth + 750) , rand() % (levelHeight + 350), 32 * 1.5, 32 * 1.5, 13, 2, 4, "res/slime.png", renderer));
+            enemies.push_back(Meow(rand() % (mapWidth + 750) , rand() % (mapHeight + 350), 32 * 1.5, 32 * 1.5, 10, 2, 4, "res/slime.png", renderer));
         }
-        enemies.push_back(Meow(rand() % (levelWidth + 750) , rand() % (levelHeight + 350), 40 * 1.5, 40 * 1.5, 300, 40, 25, "res/frog.png", renderer));
+        enemies.push_back(Meow(rand() % (mapWidth + 750) , rand() % (mapHeight + 350), 40 * 1.5, 40 * 1.5, 300, 40, 25, "res/frog.png", renderer));
     }
     if (timeInSeconds == PHASE6)
     {
         for (int i = 0; i < 70; i++)
         {
-            enemies.push_back(Meow(rand() % (levelWidth + 750) , rand() % (levelHeight + 350), 32 * 1.5, 32 * 1.5, 13, 2, 4, "res/slime.png", renderer));
+            enemies.push_back(Meow(rand() % (mapWidth + 750) , rand() % (mapHeight + 350), 32 * 1.5, 32 * 1.5, 10, 2, 4, "res/slime.png", renderer));
         }
     }
     if (timeInSeconds == PHASE7)
     {
         for (int i = 0; i < 80; i++)
         {
-            enemies.push_back(Meow(rand() % (levelWidth + 750) , rand() % (levelHeight + 350), 32 * 1.5, 32 * 1.5, 18, 2, 6, "res/slime.png", renderer));
+            enemies.push_back(Meow(rand() % (mapWidth + 750) , rand() % (mapHeight + 350), 32 * 1.5, 32 * 1.5, 17, 2, 6, "res/slime.png", renderer));
         }
     }
     if (timeInSeconds == PHASE8)
     {
         for (int i = 0; i < 90; i++)
         {
-            enemies.push_back(Meow(rand() % (levelWidth + 750) , rand() % (levelHeight + 350), 32 * 1.5, 32 * 1.5, 18, 2, 6, "res/slime.png", renderer));
+            enemies.push_back(Meow(rand() % (mapWidth + 750) , rand() % (mapHeight + 350), 32 * 1.5, 32 * 1.5, 17, 2, 6, "res/slime.png", renderer));
         }
     }
     if (timeInSeconds == PHASE9)
     {
         for (int i = 0; i < 100; i++)
         {
-            enemies.push_back(Meow(rand() % (levelWidth + 750) , rand() % (levelHeight + 350), 32 * 1.5, 32 * 1.5, 18, 2, 6, "res/slime.png", renderer));
+            enemies.push_back(Meow(rand() % (mapWidth + 750) , rand() % (mapHeight + 350), 32 * 1.5, 32 * 1.5, 17, 2, 6, "res/slime.png", renderer));
         }
     }
     if (timeInSeconds == PHASE10)
     {
         for (int i = 0; i < 110; i++)
         {
-            enemies.push_back(Meow(rand() % (levelWidth + 750) , rand() % (levelHeight + 350), 32 * 1.5, 32 * 1.5, 25, 3, 8, "res/slime.png", renderer));
+            enemies.push_back(Meow(rand() % (mapWidth + 750) , rand() % (mapHeight + 350), 32 * 1.5, 32 * 1.5, 25, 3, 8, "res/slime.png", renderer));
         }
-        enemies.push_back(Meow(rand() % (levelWidth + 750) , rand() % (levelHeight + 350), 50 * 1.5, 50 * 1.5, 800, 125, 60, "res/fireball.png", renderer));
+        enemies.push_back(Meow(rand() % (mapWidth + 750) , rand() % (mapHeight + 350), 50 * 1.5, 50 * 1.5, 800, 125, 60, "res/fireball.png", renderer));
     }
     if (timeInSeconds == PHASE11)
     {
         for (int i = 0; i < 120; i++)
         {
-            enemies.push_back(Meow(rand() % (levelWidth + 750) , rand() % (levelHeight + 350), 32 * 1.5, 32 * 1.5, 25, 3, 8, "res/slime.png", renderer));
+            enemies.push_back(Meow(rand() % (mapWidth + 750) , rand() % (mapHeight + 350), 32 * 1.5, 32 * 1.5, 25, 3, 8, "res/slime.png", renderer));
         }
     }
     if (timeInSeconds == PHASE12)
     {
         for (int i = 0; i < 130; i++)
         {
-            enemies.push_back(Meow(rand() % (levelWidth + 750) , rand() % (levelHeight + 350), 32 * 1.5, 32 * 1.5, 25, 3, 8, "res/slime.png", renderer));
+            enemies.push_back(Meow(rand() % (mapWidth + 750) , rand() % (mapHeight + 350), 32 * 1.5, 32 * 1.5, 25, 3, 8, "res/slime.png", renderer));
         }
     }
     if (timeInSeconds == PHASE13)
     {
         for (int i = 0; i < 140; i++)
         {
-            enemies.push_back(Meow(rand() % (levelWidth + 750) , rand() % (levelHeight + 350), 32 * 1.5, 32 * 1.5, 30, 3, 10, "res/slime.png", renderer));
+            enemies.push_back(Meow(rand() % (mapWidth + 750) , rand() % (mapHeight + 350), 32 * 1.5, 32 * 1.5, 30, 3, 10, "res/slime.png", renderer));
         }
     }
     if (timeInSeconds == PHASE14)
     {
         for (int i = 0; i < 150; i++)
         {
-            enemies.push_back(Meow(rand() % (levelWidth + 750) , rand() % (levelHeight + 350), 32 * 1.5, 32 * 1.5, 30, 3, 15, "res/slime.png", renderer));
+            enemies.push_back(Meow(rand() % (mapWidth + 750) , rand() % (mapHeight + 350), 32 * 1.5, 32 * 1.5, 30, 3, 15, "res/slime.png", renderer));
         }
     }
     if (timeInSeconds == PHASE15)
     {
         for (int i = 0; i < 160; i++)
         {
-            enemies.push_back(Meow(rand() % (levelWidth + 750) , rand() % (levelHeight + 350), 32 * 1.5, 32 * 1.5, 30, 4, 15, "res/slime.png", renderer));
+            enemies.push_back(Meow(rand() % (mapWidth + 750) , rand() % (mapHeight + 350), 32 * 1.5, 32 * 1.5, 30, 4, 15, "res/slime.png", renderer));
         }
-        enemies.push_back(Meow(rand() % (levelWidth + 750) , rand() % (levelHeight + 350), 50 * 1.5, 50 * 1.5, 1500, 250, 100, "res/fireball2.png", renderer));
+        enemies.push_back(Meow(rand() % (mapWidth + 750) , rand() % (mapHeight + 350), 50 * 1.5, 50 * 1.5, 1500, 250, 100, "res/fireball2.png", renderer));
     }
     if (timeInSeconds == PHASE16)
     {
         for (int i = 0; i < 170; i++)
         {
-            enemies.push_back(Meow(rand() % (levelWidth + 750) , rand() % (levelHeight + 350), 32 * 1.5, 32 * 1.5, 35, 4, 20, "res/slime.png", renderer));
+            enemies.push_back(Meow(rand() % (mapWidth + 750) , rand() % (mapHeight + 350), 32 * 1.5, 32 * 1.5, 35, 4, 20, "res/slime.png", renderer));
         }
     }
     if (timeInSeconds == PHASE17)
     {
         for (int i = 0; i < 180; i++)
         {
-            enemies.push_back(Meow(rand() % (levelWidth + 750) , rand() % (levelHeight + 350), 32 * 1.5, 32 * 1.5, 35, 4, 20, "res/slime.png", renderer));
+            enemies.push_back(Meow(rand() % (mapWidth + 750) , rand() % (mapHeight + 350), 32 * 1.5, 32 * 1.5, 35, 4, 20, "res/slime.png", renderer));
         }
     }
     if (timeInSeconds == PHASE18)
     {
         for (int i = 0; i < 190; i++)
         {
-            enemies.push_back(Meow(rand() % (levelWidth + 750) , rand() % (levelHeight + 350), 32 * 1.5, 32 * 1.5, 50, 4, 30, "res/slime.png", renderer));
+            enemies.push_back(Meow(rand() % (mapWidth + 750) , rand() % (mapHeight + 350), 32 * 1.5, 32 * 1.5, 50, 4, 30, "res/slime.png", renderer));
         }
     }
     if (timeInSeconds == PHASE19)
     {
         for (int i = 0; i < 200; i++)
         {
-            enemies.push_back(Meow(rand() % (levelWidth + 750) , rand() % (levelHeight + 350), 32 * 1.5, 32 * 1.5, 50, 4, 30, "res/slime.png", renderer));
+            enemies.push_back(Meow(rand() % (mapWidth + 750) , rand() % (mapHeight + 350), 32 * 1.5, 32 * 1.5, 50, 4, 30, "res/slime.png", renderer));
         }
-        enemies.push_back(Meow(rand() % (levelWidth + 750) , rand() % (levelHeight + 350), 60 * 2, 60 * 2, 3000, 300, 130, "res/racoon.png", renderer));
+        enemies.push_back(Meow(rand() % (mapWidth + 750) , rand() % (mapHeight + 350), 60 * 2, 60 * 2, 3000, 300, 130, "res/racoon.png", renderer));
     }
 }
 

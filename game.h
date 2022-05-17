@@ -21,19 +21,18 @@ public:
     Game();
     ~Game();
 
-    void init(const char *title, int width, int height, bool fullscreen);
-    void renderInit();
-    void menu();
-    void handleInputs();
-    void handleAnimationsAndMovements();
-    void update();
-    void render();
+    void initSDL(const char *title, int width, int height, bool fullscreen);
+    void initGame();
     void clean();
+
+    void menu();
+    void update();
+    void handleAnimationsAndMovements();
+    void handleInputs();
+    void render();
 
     void write(const std::string &msg, int x, int y, SDL_Color color, int size);
 
-    void draw(Object &object);
-    void draw(Object &object, bool flip);
     void drawEntity(Object &entity, int camx, int camy);
     void drawEntity(Object &entity, int camx, int camy, bool flip);
 
@@ -54,7 +53,7 @@ private:
 
     SDL_Texture *map;
     SDL_Rect camera;
-    int levelWidth, levelHeight;
+    int mapWidth, mapHeight;
 
     SDL_Event e;
     int mouseX, mouseY;
@@ -64,8 +63,6 @@ private:
 
     // control
     bool l, r, u, d, charging, movable, reset, canShoot;
-
-    //Object startButton, exitButton, resumeButton, credit, arrow;
 
     Player player;
     std::vector<Meow> enemies;
