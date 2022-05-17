@@ -21,6 +21,7 @@ Mô tả:
   
 
 English:
+
 You should be able to run this well if SDL2 was installed perfectly. If there's any bugs, it should be due to your installation, or your computer isn't quite good, or it is just me forgetting to commit changes.
 I personally used CodeBlocks to test and run the game.
 
