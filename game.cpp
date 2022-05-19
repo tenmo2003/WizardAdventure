@@ -79,12 +79,13 @@ Game::Game()
             handleInputs();
             render();
         }
+
         if (appRunning) {
             if (!won and !paused) {
                 write("You died! Press any key to continue.", WINDOW_WIDTH / 6 + 25, WINDOW_HEIGHT / 2 - 50, {255, 255, 255}, 50);
                 SDL_RenderPresent(renderer);
                 Mix_Chunk *lose;
-                lose = Mix_LoadWAV("res/fart.wav");
+                lose = Mix_LoadWAV("res/lose.wav");
                 Mix_PlayChannel(-1, lose, 0);
             }
             else if (won and !paused) {

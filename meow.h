@@ -60,7 +60,7 @@ public:
 
 private:
     int health, maxHealth;
-    float velocity = 2;
+    float velocity = 1.7;
 
     int attackCd = 2;
 
