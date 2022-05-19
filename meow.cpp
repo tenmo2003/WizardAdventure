@@ -66,8 +66,8 @@ void Meow::chasePlayer(int x, int y, int playerW, int playerH)
     // move the meow object
     if (xDir != 0 or yDir != 0) {
         if (getDest().x < x)
-            setDest(getDest().x + xMove * velocity, getDest().y + yMove * velocity / 1.4);
-        else setDest(getDest().x + xMove * velocity / 2, getDest().y + yMove * velocity / 1.4);
+            setDest(getDest().x + xMove * velocity, getDest().y + yMove * velocity / 1.5);
+        else setDest(getDest().x + xMove * velocity / 2, getDest().y + yMove * velocity / 1.5);
     }
 }
 

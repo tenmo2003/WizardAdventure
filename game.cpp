@@ -12,6 +12,8 @@ Game::Game()
         canShoot = false;
         won = false;
 
+        srand(time(NULL));
+
         l = r = u = d = charging = 0;
         movable = 1, reset = 1;
 
@@ -71,6 +73,7 @@ Game::Game()
 
             if (Mix_PlayingMusic() == 0)
             {
+                
                 Mix_PlayMusic(bgMusic, -1);
             }
 
@@ -133,7 +136,8 @@ void Game::initSDL(const char *title, int width, int height, bool fullscreen)
 }
 
 void Game::initGame() {
-    bgMusic = Mix_LoadMUS("res/track.wav");
+    std::string filename = "res/track" + std::to_string(rand() % 7 + 1) + ".wav";
+    bgMusic = Mix_LoadMUS(filename.c_str());
     atkSound = Mix_LoadWAV("res/atk.wav");
     bulletSound = Mix_LoadWAV("res/fire.wav");
     deathSound = Mix_LoadWAV("res/oof.wav");
