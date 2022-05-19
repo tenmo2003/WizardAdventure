@@ -13,7 +13,16 @@ SDL Version used: 32-bit ver.
 [Details in English below]
 
 
-Hướng dẫn cài đặt: Cài đặt SDL2 theo hướng dẫn tra qua google tùy IDE. Codeblocks được khuyến nghị do game được code và test trên IDE này. Tiếp theo, tải tất cả mọi file và thư mục res (readme.md optional) trong repo này. Cho các file và res đi chung với nhau như trên repo (tránh bị sai đường dẫn). Tạo project trên IDE và thêm các file cũng như thư mục res vào project đó, build and run sẽ chạy game. (Nếu build & run mà chương trình báo lỗi có chữ .dll trong đó, hãy copy mọi file .dll của SDL vào trong thư mục project (lỗi bước cài đặt))
+Hướng dẫn cài đặt: 
+
+Cách 1 (chỉ chạy game): 
+
+   -  Tải MinGW Installer https://sourceforge.net/projects/mingw/. Cài đặt MinGW Installer theo mặc định, đến bước hiện ra các package cài đặt ![image](https://user-images.githubusercontent.com/100185885/169244183-c14b2136-78b2-435f-82ec-7917693660b4.png) Tick chọn mingw32-base và mingw32-gcc-g++, ấn vào Installation -> Apply Changes. Sau khi cài xong, vào thư mục mingw vừa cài đặt, vào bin và copy đường dẫn (VD: C:\MinGW\bin) Add đường dẫn vào PATH trong system variables của environment (có thể google).
+
+   -  Sau đó, tải Repository này xuống qua nút Code màu xanh lá -> download ZIP. Giải nén -> vào thư mục Release -> chạy Project.exe hoặc WizardAdventure.exe để chạy game
+
+
+Cách 2: Cài đặt SDL2 theo hướng dẫn tra qua google tùy IDE. Codeblocks được khuyến nghị do game được code và test trên IDE này. Tiếp theo, tải tất cả mọi file và thư mục res (readme.md optional) trong repo này. Cho các file và res đi chung với nhau như trên repo (tránh bị sai đường dẫn). Tạo project trên IDE và thêm các file cũng như thư mục res vào project đó, build and run sẽ chạy game. (Nếu build & run mà chương trình báo lỗi có chữ .dll trong đó, hãy copy mọi file .dll của SDL vào trong thư mục project (lỗi bước cài đặt))
 
 
 Tóm tắt: 
