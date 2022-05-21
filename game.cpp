@@ -51,6 +51,8 @@ Game::Game()
 
                     spawnEnemies();
                 }
+                std::cout << hpOrbs.size() << std::endl;
+                std::cout << fps << std::endl;
             }
 
             if (thisTime >= (lastTimeF + 100))
@@ -73,7 +75,6 @@ Game::Game()
 
             if (Mix_PlayingMusic() == 0)
             {
-                
                 Mix_PlayMusic(bgMusic, -1);
             }
 
@@ -136,7 +137,7 @@ void Game::initSDL(const char *title, int width, int height, bool fullscreen)
 }
 
 void Game::initGame() {
-    std::string filename = "res/track" + std::to_string(rand() % 7 + 1) + ".wav";
+    std::string filename = "res/track" + std::to_string(rand() % 8 + 1) + ".mp3";
     bgMusic = Mix_LoadMUS(filename.c_str());
     atkSound = Mix_LoadWAV("res/atk.wav");
     bulletSound = Mix_LoadWAV("res/fire.wav");
