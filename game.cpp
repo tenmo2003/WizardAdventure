@@ -51,8 +51,6 @@ Game::Game()
 
                     spawnEnemies();
                 }
-                std::cout << hpOrbs.size() << std::endl;
-                std::cout << fps << std::endl;
             }
 
             if (thisTime >= (lastTimeF + 100))
