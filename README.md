@@ -13,7 +13,7 @@ SDL Version used: 32-bit ver.
 [Details in English below]
 
 
-Hướng dẫn cài đặt: 
+***Hướng dẫn cài đặt: 
 
 Cách 1 (chỉ chạy game): 
 
@@ -25,10 +25,13 @@ Cách 1 (chỉ chạy game):
 Cách 2: Cài đặt SDL2 theo hướng dẫn tra qua google tùy IDE. Codeblocks được khuyến nghị do game được code và test trên IDE này. Tiếp theo, tải tất cả mọi file và thư mục res (readme.md optional) trong repo này. Cho các file và res đi chung với nhau như trên repo (tránh bị sai đường dẫn). Tạo project trên IDE và thêm các file cũng như thư mục res vào project đó, build and run sẽ chạy game. (Nếu build & run mà chương trình báo lỗi có chữ .dll trong đó, hãy copy mọi file .dll của SDL vào trong thư mục project (lỗi bước cài đặt))
 
 
-Tóm tắt: 
+
+***Tóm tắt: 
+
   Game thể loại sống còn. Người chơi cố gắng sống sót lâu nhất có thể trước sự tấn công liên tục từ các đợt quái. Đến mốc thời gian 10 phút, đợt quái cuối cùng sẽ sinh ra. Tiêu diệt hết tất cả quái để chiến thắng.
   
-Chức năng:
+
+***Chức năng:
 
   -WASD để di chuyển, phím cách(spacebar) để dùng đòn băng, di chuyển chuột điều khiển hướng đạn bắn, đạn sẽ bắn về vị trí con trỏ chuột trong cửa sổ. Khi lên cấp, số đạn sẽ được tăng dần và bắn theo hướng tỏa ra.
   
@@ -36,7 +39,8 @@ Chức năng:
   
   -Sẽ có 10 tim được rải ngẫu nhiên quanh map, ăn tim sẽ được hồi 10% máu, sau khi ăn tim, 1 tim mới sẽ được sinh ra theo seed random trên map, luôn có 10 tim tồn tại trên map.
 
-Các kĩ thuật được sử dụng: vector(mảng không dynamic nên không tối ưu cho game), con trỏ và các tham trị, tham chiếu, lớp (cấu trúc tương tự), 4 thư viện SDL2 như đã đề cập, ...
+
+***Các kĩ thuật được sử dụng: vector(mảng không dynamic nên không tối ưu cho game), con trỏ và các tham trị, tham chiếu, lớp (cấu trúc tương tự), 4 thư viện SDL2 như đã đề cập, ...
   
   
 
