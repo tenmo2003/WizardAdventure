@@ -17,7 +17,7 @@ Hướng dẫn cài đặt:
 
 Cách 1 (chỉ chạy game): 
 
-   -  Tải MinGW Installer https://sourceforge.net/projects/mingw/. Cài đặt MinGW Installer theo mặc định, đến bước hiện ra các package cài đặt ![image](https://user-images.githubusercontent.com/100185885/169244183-c14b2136-78b2-435f-82ec-7917693660b4.png) Tick chọn mingw32-base và mingw32-gcc-g++, ấn vào Installation -> Apply Changes. Sau khi cài xong, vào thư mục mingw vừa cài đặt, vào bin và copy đường dẫn (VD: C:\MinGW\bin) Add đường dẫn vào PATH trong system variables của environment (có thể google).
+   -  (Nếu chưa có MinGW) Tải MinGW Installer https://sourceforge.net/projects/mingw/. Cài đặt MinGW Installer theo mặc định, đến bước hiện ra các package cài đặt ![image](https://user-images.githubusercontent.com/100185885/169244183-c14b2136-78b2-435f-82ec-7917693660b4.png) Tick chọn mingw32-base và mingw32-gcc-g++, ấn vào Installation -> Apply Changes. Sau khi cài xong, vào thư mục mingw vừa cài đặt, vào bin và copy đường dẫn (VD: C:\MinGW\bin) Add đường dẫn vào PATH trong system variables của environment (có thể google).
 
    -  Sau đó, tải Repository này xuống qua nút Code màu xanh lá -> download ZIP. Giải nén -> vào thư mục Release -> chạy Project.exe hoặc WizardAdventure.exe để chạy game
 
