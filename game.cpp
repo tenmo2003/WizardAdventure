@@ -156,6 +156,12 @@ void Game::initGame() {
     player.setLevel(1);
     player.setMaxHealth(100);
     player.setHealth(100);
+    player.setAttackCd(2.3);
+    player.setAttackTimer(0);
+    player.setShootTimer(1);
+    player.setShootCd(2);
+    player.setDamage(5);
+    player.setBulletDamage(5);
 
     enemies.clear();
     bullets.clear();
