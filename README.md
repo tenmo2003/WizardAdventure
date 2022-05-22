@@ -13,7 +13,7 @@ SDL Version used: 32-bit ver.
 [Details in English below]
 
 
-***Hướng dẫn cài đặt: 
+*** Hướng dẫn cài đặt: 
 
 Cách 1 (chỉ chạy game): 
 
@@ -26,12 +26,12 @@ Cách 2: Cài đặt SDL2 theo hướng dẫn tra qua google tùy IDE. Codeblock
 
 
 
-***Tóm tắt: 
+*** Tóm tắt: 
 
   Game thể loại sống còn. Người chơi cố gắng sống sót lâu nhất có thể trước sự tấn công liên tục từ các đợt quái. Đến mốc thời gian 10 phút, đợt quái cuối cùng sẽ sinh ra. Tiêu diệt hết tất cả quái để chiến thắng.
   
 
-***Chức năng:
+*** Chức năng:
 
   -WASD để di chuyển, phím cách(spacebar) để dùng đòn băng, di chuyển chuột điều khiển hướng đạn bắn, đạn sẽ bắn về vị trí con trỏ chuột trong cửa sổ. Khi lên cấp, số đạn sẽ được tăng dần và bắn theo hướng tỏa ra.
   
@@ -40,7 +40,11 @@ Cách 2: Cài đặt SDL2 theo hướng dẫn tra qua google tùy IDE. Codeblock
   -Sẽ có 10 tim được rải ngẫu nhiên quanh map, ăn tim sẽ được hồi 10% máu, sau khi ăn tim, 1 tim mới sẽ được sinh ra theo seed random trên map, luôn có 10 tim tồn tại trên map.
 
 
-***Các kĩ thuật được sử dụng: vector(mảng không dynamic nên không tối ưu cho game), con trỏ và các tham trị, tham chiếu, lớp (cấu trúc tương tự), 4 thư viện SDL2 như đã đề cập, ...
+*** Các kĩ thuật được sử dụng: vector(mảng không dynamic nên không tối ưu cho game), con trỏ và các tham trị, tham chiếu, lớp (cấu trúc tương tự), 4 thư viện SDL2 như đã đề cập, ...
+
+*** Hướng phát triển: Game có thể phát triển thêm nhiều tính năng để hoàn thiện và hay hơn như thêm kĩ năng dạng tấn công hoặc phòng thủ, hệ thống coin cho các perks, cosmetics, ...
+
+*** Kết luận: Dự án game này đã giúp bản thân làm quen được nhiều với OOP, cách quản lí hệ thống các chức năng trong 1 ứng dụng, kiểm soát code tốt hơn trong 1 file lớn, ...
   
   
 
