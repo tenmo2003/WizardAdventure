@@ -38,6 +38,8 @@ Cách 2: Cài đặt SDL2 theo hướng dẫn tra qua google tùy IDE. Codeblock
   -F11: chế độ toàn màn hình, P: dừng trò chơi (khi đang chơi).
   
   -Sẽ có 10 tim được rải ngẫu nhiên quanh map, ăn tim sẽ được hồi 10% máu, sau khi ăn tim, 1 tim mới sẽ được sinh ra theo seed random trên map, luôn có 10 tim tồn tại trên map.
+  
+  -Nhạc nền sau mỗi ván game sẽ random trong 8 tracks có sẵn, trong ván game sẽ loop nhạc nền liên tục (có thể làm random track trong game).
 
 
 *** Các kĩ thuật được sử dụng: vector(mảng không dynamic nên không tối ưu cho game), con trỏ và các tham trị, tham chiếu, lớp (cấu trúc tương tự), 4 thư viện SDL2 như đã đề cập, ...
