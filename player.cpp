@@ -67,7 +67,6 @@ void Player::updateAnimation(int state) {
 bool Player::canAttack()
 {
     if (attackTimer <= 0) {
-        attackTimer = attackCd;
         return true;
     }
     else

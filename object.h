@@ -10,6 +10,10 @@ class Object
 {
 public:
     Object();
+    
+    ~Object() {
+        SDL_DestroyTexture(tex);
+    }
 
     void setSrc(int x, int y, int w, int h);
     SDL_Rect getSrc() const { return src; }

@@ -35,7 +35,10 @@ public:
 
     void updateAnimation(int state);
 
-    void attack() { attacking = 1; }
+    void attack() { 
+        attacking = 1;
+        attackTimer = attackCd;
+    }
     bool isAttacking() const { return attacking; }
 
     void setDamage(int d) { damage = d; }

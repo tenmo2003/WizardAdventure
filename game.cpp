@@ -298,30 +298,30 @@ void Game::handleInputs()
                 fullscreen = !fullscreen;
             if (movable)
             {
-                if (e.key.keysym.sym == SDLK_a)
-                {
-                    l = 1;
-                    r = 0;
-                }
-                if (e.key.keysym.sym == SDLK_d)
-                {
-                    r = 1;
-                    l = 0;
-                }
-                if (e.key.keysym.sym == SDLK_w)
-                {
-                    u = 1;
-                    d = 0;
-                }
-                if (e.key.keysym.sym == SDLK_s)
-                {
-                    d = 1;
-                    u = 0;
-                }
-                if (e.key.keysym.sym == SDLK_l)
-                {
-                    charging = 1;
-                }
+            //     if (e.key.keysym.sym == SDLK_a)
+            //     {
+            //         l = 1;
+            //         r = 0;
+            //     }
+            //     if (e.key.keysym.sym == SDLK_d)
+            //     {
+            //         r = 1;
+            //         l = 0;
+            //     }
+            //     if (e.key.keysym.sym == SDLK_w)
+            //     {
+            //         u = 1;
+            //         d = 0;
+            //     }
+            //     if (e.key.keysym.sym == SDLK_s)
+            //     {
+            //         d = 1;
+            //         u = 0;
+            //     }
+            //     if (e.key.keysym.sym == SDLK_l)
+            //     {
+            //         charging = 1;
+            //     }
                 if (e.key.keysym.sym == SDLK_SPACE)
                 {
                     if (player.canAttack())
@@ -400,6 +400,45 @@ void Game::handleInputs()
         SDL_GetMouseState(&mouseX, &mouseY);
         mouseX += camera.x;
         mouseY += camera.y;
+    }
+    const Uint8* key = SDL_GetKeyboardState( NULL );
+    if (movable) {
+        if (key[SDL_SCANCODE_A])
+        {
+            l = 1;
+            r = 0;
+        }
+        if (key[SDL_SCANCODE_D])
+        {
+            r = 1;
+            l = 0;
+        }
+        if (key[SDL_SCANCODE_W])
+        {
+            u = 1;
+            d = 0;
+        }
+        if (key[SDL_SCANCODE_S])
+        {
+            d = 1;
+            u = 0;
+        }
+        if (key[SDL_SCANCODE_L])
+        {
+            charging = 1;
+        }
+        // if (key[SDL_SCANCODE_SPACE])
+        // {
+        //     if (player.canAttack())
+        //     {
+        //         player.attack();
+        //         Mix_PlayChannel(-1, atkSound, 0);
+        //         if (player.getPlayerState() == IDLERIGHT or player.getPlayerState() == RUNRIGHT)
+        //             player.setDest(player.getDest().x - 49, player.getDest().y, 104 * 2, 48 * 2);
+        //         else if (player.getPlayerState() == IDLELEFT or player.getPlayerState() == RUNLEFT)
+        //             player.setDest(player.getDest().x - 95, player.getDest().y, 104 * 2, 48 * 2);
+        //     }
+        // }
     }
 }
 
@@ -666,6 +705,9 @@ void Game::render()
     // get exp bar on the upper side of the screen
     renderPlayerExpBar(0, 0, (float)player.getExp() / player.getLevelExp());
 
+    if (!player.canAttack() and !player.isAttacking())
+        renderPlayerAttackCdBar(player.getDest().x - camera.x + 11, player.getDest().y - 103 + player.getDest().h - camera.y, player.getAttackTimer() / player.getAttackCd());
+
     write(std::to_string(timeInSeconds / 60) + " : " + std::to_string(timeInSeconds % 60), WINDOW_WIDTH / 2 - 40, 15, {255, 255, 255, 255}, 40);
     write("Player level: " + std::to_string(player.getLevel()), WINDOW_WIDTH - 5 - 200, 15, {255, 255, 255, 255}, 25);
     write("Slayed: " + std::to_string(killCount), 5, 15, {255, 255, 255, 255}, 25);
@@ -912,6 +954,17 @@ void Game::renderPlayerExpBar(int x, int y, float percent)
     SDL_RenderFillRect(renderer, &expBar);
 }
 
+void Game::renderPlayerAttackCdBar(int x, int y, float percent) {
+    SDL_Rect attackCdBar;
+    attackCdBar.x = x;
+    attackCdBar.y = y;
+    attackCdBar.w = 40;
+    attackCdBar.h = 8;
+    SDL_SetRenderDrawColor(renderer, 104, 104, 104, 255);
+    attackCdBar.w = attackCdBar.w * percent;
+    SDL_RenderFillRect(renderer, &attackCdBar);
+}
+
 void Game::spawnEnemies()
 {
     if (timeInSeconds == PHASE0)
@@ -1131,7 +1184,6 @@ void Game::handlePlayerLevel()
         player.setLevel(10);
         player.setMaxHealth(player.getMaxHealth() + 10);
         player.setHealth(player.getHealth() + 10);
-        player.setVelocity(player.getVelocity() + 0.2);
     }
 
     if (player.getLevel() == 10 and player.getExp() >= player.getLevelExp())
@@ -1181,7 +1233,7 @@ void Game::handlePlayerLevel()
         player.setLevel(16);
         player.setMaxHealth(player.getMaxHealth() + 20);
         player.setHealth(player.getHealth() + 10);
-        player.setVelocity(player.getVelocity() + 0.2);
+        player.setVelocity(player.getVelocity() + 0.1);
     }
 
     if (player.getLevel() == 16 and player.getExp() >= player.getLevelExp())

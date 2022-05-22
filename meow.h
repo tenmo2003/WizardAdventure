@@ -21,6 +21,10 @@ public:
         damage = dmg;
     }
 
+    ~Meow() {
+        SDL_DestroyTexture(getObject());
+    }
+
     void setFlip(bool f) { flip = f; }
     bool getFlip() const { return flip; }
 

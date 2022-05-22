@@ -39,6 +39,7 @@ public:
     bool collisionPlayer(Object &a, Object &b);
     bool collision(Object &a, Object &b);
 
+    void renderPlayerAttackCdBar(int x, int y, float percent);
     void renderPlayerHpBar(int x, int y, float percent);
     void renderPlayerExpBar(int x, int y, float percent);
 
