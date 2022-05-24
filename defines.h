@@ -20,16 +20,15 @@ const int ATTACKLEFT = 12;
 const int ATTACK = 13;
 
 // define different timestamps for enemy spawn phases
-const int PHASE0 = 2;
-const int PHASE1 = 10;
-const int PHASE2 = 20;
-const int PHASE3 = 30;
-const int PHASE4 = 45;
-const int PHASE5 = 60;
-const int PHASE6 = 80;
-const int PHASE7 = 120;
-const int PHASE8 = 140;
-const int PHASE9 = 160;
+const int PHASE1 = 2;
+const int PHASE2 = 10;
+const int PHASE3 = 20;
+const int PHASE4 = 30;
+const int PHASE5 = 45;
+const int PHASE6 = 60;
+const int PHASE7 = 80;
+const int PHASE8 = 120;
+const int PHASE9 = 140;
 const int PHASE10 = 190;
 const int PHASE11 = 220;
 const int PHASE12 = 250;

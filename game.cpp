@@ -973,111 +973,104 @@ void Game::renderPlayerAttackCdBar(int x, int y, float percent) {
 
 void Game::spawnEnemies()
 {
-    if (timeInSeconds == PHASE0)
+    if (timeInSeconds == PHASE1)
     {
         for (int i = 0; i < 10; i++)
         {
-            enemies.push_back(Meow(rand() % (mapWidth + 750) , rand() % (mapHeight + 350), 32 * 1.5, 32 * 1.5, 5, 1, 2, "res/slime.png", renderer));
-        }
-    }
-    if (timeInSeconds == PHASE1)
-    {
-        for (int i = 0; i < 20; i++)
-        {
-            enemies.push_back(Meow(rand() % (mapWidth + 750) , rand() % (mapHeight + 350), 32 * 1.5, 32 * 1.5, 5, 1, 2, "res/slime.png", renderer));
+            enemies.push_back(Meow(rand() % (mapWidth + 750) , rand() % (mapHeight + 350), 32 * 1.5, 32 * 1.5, 5, 1, 2, "res/frog2.png", renderer));
         }
     }
     if (timeInSeconds == PHASE2)
     {
-        for (int i = 0; i < 30; i++)
+        for (int i = 0; i < 20; i++)
         {
-            enemies.push_back(Meow(rand() % (mapWidth + 750) , rand() % (mapHeight + 350), 32 * 1.5, 32 * 1.5, 5, 1, 2, "res/slime.png", renderer));
+            enemies.push_back(Meow(rand() % (mapWidth + 750) , rand() % (mapHeight + 350), 32 * 1.5, 32 * 1.5, 5, 1, 2, "res/frog2.png", renderer));
         }
     }
     if (timeInSeconds == PHASE3)
     {
-        for (int i = 0; i < 40; i++)
+        for (int i = 0; i < 30; i++)
         {
-            enemies.push_back(Meow(rand() % (mapWidth + 750) , rand() % (mapHeight + 350), 32 * 1.5, 32 * 1.5, 5, 1, 2, "res/slime.png", renderer));
+            enemies.push_back(Meow(rand() % (mapWidth + 750) , rand() % (mapHeight + 350), 32 * 1.5, 32 * 1.5, 5, 1, 2, "res/frog2.png", renderer));
         }
     }
     if (timeInSeconds == PHASE4)
     {
-        for (int i = 0; i < 50; i++)
+        for (int i = 0; i < 40; i++)
         {
-            enemies.push_back(Meow(rand() % (mapWidth + 750) , rand() % (mapHeight + 350), 32 * 1.5, 32 * 1.5, 10, 1, 4, "res/slime.png", renderer));
+            enemies.push_back(Meow(rand() % (mapWidth + 750) , rand() % (mapHeight + 350), 32 * 1.5, 32 * 1.5, 5, 1, 2, "res/frog2.png", renderer));
         }
     }
     if (timeInSeconds == PHASE5)
     {
-        for (int i = 0; i < 60; i++)
+        for (int i = 0; i < 50; i++)
         {
-            enemies.push_back(Meow(rand() % (mapWidth + 750) , rand() % (mapHeight + 350), 32 * 1.5, 32 * 1.5, 10, 2, 4, "res/slime.png", renderer));
+            enemies.push_back(Meow(rand() % (mapWidth + 750) , rand() % (mapHeight + 350), 32 * 1.5, 32 * 1.5, 10, 1, 4, "res/frog2.png", renderer));
         }
-        enemies.push_back(Meow(rand() % (mapWidth + 750) , rand() % (mapHeight + 350), 40 * 1.5, 40 * 1.5, 300, 40, 25, "res/frog.png", renderer));
     }
     if (timeInSeconds == PHASE6)
     {
-        for (int i = 0; i < 70; i++)
+        for (int i = 0; i < 60; i++)
         {
-            enemies.push_back(Meow(rand() % (mapWidth + 750) , rand() % (mapHeight + 350), 32 * 1.5, 32 * 1.5, 10, 2, 4, "res/slime.png", renderer));
+            enemies.push_back(Meow(rand() % (mapWidth + 750) , rand() % (mapHeight + 350), 32 * 1.1, 32 * 1.1, 10, 2, 4, "res/flame.png", renderer));
         }
+        enemies.push_back(Meow(rand() % (mapWidth + 750) , rand() % (mapHeight + 350), 50 * 1.5, 50 * 1.5, 300, 40, 25, "res/frog.png", renderer));
     }
     if (timeInSeconds == PHASE7)
     {
-        for (int i = 0; i < 80; i++)
+        for (int i = 0; i < 70; i++)
         {
-            enemies.push_back(Meow(rand() % (mapWidth + 750) , rand() % (mapHeight + 350), 32 * 1.5, 32 * 1.5, 17, 2, 6, "res/slime.png", renderer));
+            enemies.push_back(Meow(rand() % (mapWidth + 750) , rand() % (mapHeight + 350), 32 * 1.1, 32 * 1.1, 10, 2, 4, "res/flame.png", renderer));
         }
     }
     if (timeInSeconds == PHASE8)
     {
-        for (int i = 0; i < 90; i++)
+        for (int i = 0; i < 80; i++)
         {
-            enemies.push_back(Meow(rand() % (mapWidth + 750) , rand() % (mapHeight + 350), 32 * 1.5, 32 * 1.5, 17, 2, 6, "res/slime.png", renderer));
+            enemies.push_back(Meow(rand() % (mapWidth + 750) , rand() % (mapHeight + 350), 32 * 1.1, 32 * 1.1, 17, 2, 6, "res/flame.png", renderer));
         }
     }
     if (timeInSeconds == PHASE9)
     {
-        for (int i = 0; i < 100; i++)
+        for (int i = 0; i < 120; i++)
         {
-            enemies.push_back(Meow(rand() % (mapWidth + 750) , rand() % (mapHeight + 350), 32 * 1.5, 32 * 1.5, 17, 2, 6, "res/slime.png", renderer));
+            enemies.push_back(Meow(rand() % (mapWidth + 750) , rand() % (mapHeight + 350), 32 * 1.1, 32 * 1.1, 17, 2, 6, "res/flame.png", renderer));
         }
     }
     if (timeInSeconds == PHASE10)
     {
         for (int i = 0; i < 110; i++)
         {
-            enemies.push_back(Meow(rand() % (mapWidth + 750) , rand() % (mapHeight + 350), 32 * 1.5, 32 * 1.5, 25, 3, 8, "res/slime.png", renderer));
+            enemies.push_back(Meow(rand() % (mapWidth + 750) , rand() % (mapHeight + 350), 32 * 1.5, 32 * 1.5, 25, 3, 8, "res/racoon2.png", renderer));
         }
-        enemies.push_back(Meow(rand() % (mapWidth + 750) , rand() % (mapHeight + 350), 50 * 1.5, 50 * 1.5, 800, 125, 60, "res/fireball.png", renderer));
+        enemies.push_back(Meow(rand() % (mapWidth + 750) , rand() % (mapHeight + 350), 60 * 1.5, 60 * 1.5, 800, 125, 60, "res/fireball.png", renderer));
     }
     if (timeInSeconds == PHASE11)
     {
         for (int i = 0; i < 120; i++)
         {
-            enemies.push_back(Meow(rand() % (mapWidth + 750) , rand() % (mapHeight + 350), 32 * 1.5, 32 * 1.5, 25, 3, 8, "res/slime.png", renderer));
+            enemies.push_back(Meow(rand() % (mapWidth + 750) , rand() % (mapHeight + 350), 32 * 1.5, 32 * 1.5, 25, 3, 8, "res/racoon2.png", renderer));
         }
     }
     if (timeInSeconds == PHASE12)
     {
         for (int i = 0; i < 130; i++)
         {
-            enemies.push_back(Meow(rand() % (mapWidth + 750) , rand() % (mapHeight + 350), 32 * 1.5, 32 * 1.5, 25, 3, 8, "res/slime.png", renderer));
+            enemies.push_back(Meow(rand() % (mapWidth + 750) , rand() % (mapHeight + 350), 32 * 1.5, 32 * 1.5, 25, 3, 8, "res/racoon2.png", renderer));
         }
     }
     if (timeInSeconds == PHASE13)
     {
         for (int i = 0; i < 140; i++)
         {
-            enemies.push_back(Meow(rand() % (mapWidth + 750) , rand() % (mapHeight + 350), 32 * 1.5, 32 * 1.5, 30, 3, 10, "res/slime.png", renderer));
+            enemies.push_back(Meow(rand() % (mapWidth + 750) , rand() % (mapHeight + 350), 32 * 1.5, 32 * 1.5, 30, 3, 10, "res/racoon2.png", renderer));
         }
     }
     if (timeInSeconds == PHASE14)
     {
         for (int i = 0; i < 150; i++)
         {
-            enemies.push_back(Meow(rand() % (mapWidth + 750) , rand() % (mapHeight + 350), 32 * 1.5, 32 * 1.5, 30, 3, 15, "res/slime.png", renderer));
+            enemies.push_back(Meow(rand() % (mapWidth + 750) , rand() % (mapHeight + 350), 32 * 1.5, 32 * 1.5, 30, 3, 15, "res/racoon2.png", renderer));
         }
     }
     if (timeInSeconds == PHASE15)
@@ -1086,7 +1079,7 @@ void Game::spawnEnemies()
         {
             enemies.push_back(Meow(rand() % (mapWidth + 750) , rand() % (mapHeight + 350), 32 * 1.5, 32 * 1.5, 30, 4, 15, "res/slime.png", renderer));
         }
-        enemies.push_back(Meow(rand() % (mapWidth + 750) , rand() % (mapHeight + 350), 50 * 1.5, 50 * 1.5, 1500, 250, 100, "res/fireball2.png", renderer));
+        enemies.push_back(Meow(rand() % (mapWidth + 750) , rand() % (mapHeight + 350), 70 * 1.5, 50 * 1.5, 1500, 250, 100, "res/racoon.png", renderer));
     }
     if (timeInSeconds == PHASE16)
     {
@@ -1115,7 +1108,7 @@ void Game::spawnEnemies()
         {
             enemies.push_back(Meow(rand() % (mapWidth + 750) , rand() % (mapHeight + 350), 32 * 1.5, 32 * 1.5, 50, 4, 30, "res/slime.png", renderer));
         }
-        enemies.push_back(Meow(rand() % (mapWidth + 750) , rand() % (mapHeight + 350), 60 * 2, 60 * 2, 3000, 300, 130, "res/racoon.png", renderer));
+        enemies.push_back(Meow(rand() % (mapWidth + 750) , rand() % (mapHeight + 350), 70 * 2, 70 * 2, 3000, 300, 130, "res/fireball2.png", renderer));
     }
 }
 

@@ -4,7 +4,43 @@
 
 void Meow::updateAnimation()
 {
-    if (imageName == "res/fireball.png" or imageName == "res/fireball2.png") {
+    if (imageName == "res/slime.png") {
+        setSrc(32 * tick, 32, 32, 32);
+        if (begin > speed)
+        {
+            tick++;
+            begin = 0;
+        }
+        begin++;
+        if (tick >= 6)
+        {
+            tick = 0;
+        }
+    }
+    else if (imageName == "res/dog.png" or imageName == "res/racoon2.png" or imageName == "res/frog2.png") {
+        speed = 9;
+        setSrc(16 * tick, 0, 16, 16);
+        if (begin > speed) {
+            tick++;
+            begin = 0;
+        }
+        begin++;
+        if (tick >= 2) {
+            tick = 0;
+        }
+    }
+    else if (imageName == "res/flame.png") {
+        setSrc(16 * 3, 16 * tick, 16, 16);
+        if (begin > speed) {
+            tick++;
+            begin = 0;
+        }
+        begin++;
+        if (tick >= 4) {
+            tick = 0;
+        }
+    }
+    else if (imageName == "res/fireball.png" or imageName == "res/fireball2.png") {
         setSrc(50 * tick, 0, 50, 50);
         if (begin > speed) {
             tick++;
@@ -37,19 +73,6 @@ void Meow::updateAnimation()
             tick = 0;
         }
     }
-    else {
-        setSrc(32 * tick, 32, 32, 32);
-        if (begin > speed)
-        {
-            tick++;
-            begin = 0;
-        }
-        begin++;
-        if (tick >= 6)
-        {
-            tick = 0;
-        }
-    }
 }
 
 void Meow::chasePlayer(int x, int y, int playerW, int playerH)
@@ -57,7 +80,7 @@ void Meow::chasePlayer(int x, int y, int playerW, int playerH)
     // setting up vector direction
     float xDir = x - getDest().x;
     float yDir = y - getDest().y;
-    // adjust so that the meow stop once it reaches the player model not position
+    // adjust so that the meow stop once it reaches the player model position
     xDir += playerW / 4 - 3;
     yDir += playerH / 4 + 20;
     // normalize direction
