@@ -55,8 +55,10 @@ Cách 2: Cài đặt SDL2 theo hướng dẫn tra qua google tùy IDE. Codeblock
 
 English:
 
-You should be able to run this well if SDL2 was installed perfectly. If there's any bugs, it should be due to your installation, or your computer isn't quite good, or it is just me forgetting to commit changes.
+You should be able to build and run this well if SDL2 was installed perfectly. If there's any bugs, it should be due to your installation, or your computer isn't quite good, or it is just me forgetting to commit changes.
 I personally used CodeBlocks to test and run the game.
+
+If you only want to try the game out, you can still download the whole repo and then go into Release -> Project.exe. This requires your computer to have MinGW (32-bit ver best) in PATH of the system variables. You can google "how to install MinGW and add to PATH" on Google if you don't know how to.
 
 Control: WASD for movements, Spacebar for ice-attack. When you hit level 3, you will be able to shoot projectiles, the projectiles will be fired towards your cursor position (keep it inside the window pls). As you progress in level, you will be able to fire more projectiles (spread out) at once. There are also hearts on the map that you can use to heal for 10% of your max health.
 
