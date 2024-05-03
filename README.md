@@ -70,3 +70,5 @@ SDL Version used: 32-bit ver.
   Control: WASD for movements, Spacebar for ice-attack. When you hit level 3, you will be able to shoot projectiles, the projectiles will be fired towards your cursor position (keep it inside the window pls). As you progress in level, you will be able to fire more projectiles (spread out) at once. There are also hearts on the map that you can use to heal for 10% of your max health.
 
   Objectives: Survive as long as you can! The final wave of enemies comes in at 10 minute mark, if the player manage to clear all the enemies, they win!
+
+  Cool!
