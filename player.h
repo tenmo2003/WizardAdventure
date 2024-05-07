@@ -74,6 +74,10 @@ public:
         return false;
     }
 
+    /*
+        some code here
+    */
+
 private:
     int health, maxHealth;
     float velocity;
